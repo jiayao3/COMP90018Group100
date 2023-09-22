@@ -23,7 +23,7 @@ import org.w3c.dom.Text;
 public class Registration extends AppCompatActivity {
 
     TextInputEditText input_email, input_password;
-    Button reg_btn;
+    Button reg_btn, exit_btn;
     FirebaseAuth mAuth;
     TextView login_here;
 
@@ -52,6 +52,7 @@ public class Registration extends AppCompatActivity {
         input_password = findViewById(R.id.password);
         reg_btn = findViewById(R.id.register_btn);
         login_here = findViewById(R.id.login_opt);
+        exit_btn = findViewById(R.id.exit_btn);
 
         // Checking if the button is clicked
         reg_btn.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +103,18 @@ public class Registration extends AppCompatActivity {
             public void onClick(View view) {
                 // If the button is clicked, it will bring the user to the login page
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                // Ends the current activity
+                finish();
+            }
+        });
+
+        // Checking if "X" is clicked
+        exit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // If the button is clicked, it will bring the user to the main activity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 // Ends the current activity
                 finish();

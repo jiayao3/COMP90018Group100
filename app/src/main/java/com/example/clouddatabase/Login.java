@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     TextInputEditText input_email, input_password;
-    Button login_btn;
+    Button login_btn, exit_btn;
     FirebaseAuth mAuth;
     TextView register_here;
 
@@ -51,6 +51,7 @@ public class Login extends AppCompatActivity {
         input_password = findViewById(R.id.password);
         login_btn = findViewById(R.id.login_btn);
         register_here = findViewById(R.id.register_opt);
+        exit_btn = findViewById(R.id.exit_btn);
 
         // Checking if the "Login" button is clicked
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +105,18 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 // If the button is clicked, it will bring the user to the registration page
                 Intent intent = new Intent(getApplicationContext(), Registration.class);
+                startActivity(intent);
+                // Ends the current activity
+                finish();
+            }
+        });
+
+        // Checking if "X" is clicked
+        exit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // If the button is clicked, it will bring the user to the main activity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 // Ends the current activity
                 finish();
