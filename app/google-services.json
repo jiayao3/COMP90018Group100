@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "262513410901",
-    "project_id": "comp90018-final-project",
-    "storage_bucket": "comp90018-final-project.appspot.com"
+    "project_number": "612670077198",
+    "project_id": "comp90018-group-project-1eafc",
+    "storage_bucket": "comp90018-group-project-1eafc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:262513410901:android:cb1f371e40e681f31c65dc",
+        "mobilesdk_app_id": "1:612670077198:android:8ef11ca69b282679a93f5f",
         "android_client_info": {
-          "package_name": "com.android.application"
+          "package_name": "com.example.clouddatabase"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBVgR9OE-mdMaT5iK0JPHu78m5fh2ZKCFc"
+          "current_key": "AIzaSyBcSXPGj4IfKDv8RFZqzKsA13RN17AOkuk"
         }
       ],
       "services": {
