@@ -53,4 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <!--Added option to login instead-->
+    <TextView
+        android:id="@+id/login_opt"
+        android:text="@string/already_have_an_account_login_here"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
