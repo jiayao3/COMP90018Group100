@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     private SensorEventListener accelerometerListener;
-    private boolean isInitial = true; // Flag to track the initial position
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                 double tiltAngleDegrees = Math.toDegrees(Math.asin(xAcceleration / totalAcceleration));
 
                 // Define thresholds for left and right tilt angles (adjust as needed)
-                double leftTiltThreshold = -15.0; // Example threshold for left tilt
-                double rightTiltThreshold = 15.0; // Example threshold for right tilt
+                double leftTiltThreshold = -10.0; // Example threshold for left tilt
+                double rightTiltThreshold = 10.0; // Example threshold for right tilt
 
                 // Check if the phone is tilted to the left
                 if (tiltAngleDegrees < leftTiltThreshold) {
@@ -56,11 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 else if (tiltAngleDegrees > rightTiltThreshold) {
                     getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
                 }
-                // If the phone is near the initial position, set the background to white
+                // If the phone is near horizontal, set the background to white
                 else {
-                    if (!isInitial) {
-                        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-                    }
+                    getWindow().getDecorView().setBackgroundColor(Color.WHITE);
                 }
             }
 
@@ -83,10 +80,4 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.unregisterListener(accelerometerListener);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Ensure that the flag is set to true when the activity is destroyed
-        isInitial = true;
-    }
 }
