@@ -74,9 +74,9 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                 val left = boundingBox.left * scaleFactor
                 val right = boundingBox.right * scaleFactor
 
-                // Draw bounding box around detected faces
-                val drawableRect = RectF(left, top, right, bottom)
-                canvas.drawRect(drawableRect, boxPaint)
+//                // Draw bounding box around detected faces
+//                val drawableRect = RectF(left, top, right, bottom)
+//                canvas.drawRect(drawableRect, boxPaint)
 
                 // Create text to display alongside detected faces
                 val drawableText =
@@ -84,7 +84,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                             " " +
                             String.format(
                                 "%.2f",
-                                (detection.boundingBox().left + detection.boundingBox().right) / 2
+                                detection.boundingBox().centerX() - 250
                             )
 
                 // Draw rect behind display text
@@ -93,15 +93,6 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                     0,
                     drawableText.length,
                     bounds
-                )
-                val textWidth = bounds.width()
-                val textHeight = bounds.height()
-                canvas.drawRect(
-                    left,
-                    top,
-                    left + textWidth + Companion.BOUNDING_RECT_TEXT_PADDING,
-                    top + textHeight + Companion.BOUNDING_RECT_TEXT_PADDING,
-                    textBackgroundPaint
                 )
 
                 // Draw text for detected face
