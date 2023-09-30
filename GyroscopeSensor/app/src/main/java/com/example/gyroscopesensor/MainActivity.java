@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
                 // Calculate the angle of tilt in degrees
                 double tiltAngleDegrees = Math.toDegrees(Math.asin(xAcceleration / totalAcceleration));
 
+                // Show the position value of phone
+                // Load and use views afterwards
+                TextView tv1 = (TextView)findViewById(R.id.position);
+                tv1.setText(Double.toString(tiltAngleDegrees));
+
+                // Change background color
                 // Define thresholds for left and right tilt angles (adjust as needed)
                 double leftTiltThreshold = -10.0; // Example threshold for left tilt
                 double rightTiltThreshold = 10.0; // Example threshold for right tilt
