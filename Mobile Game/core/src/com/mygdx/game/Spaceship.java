@@ -22,22 +22,35 @@ public class Spaceship {
 		img = new Texture("spaceship.png");
 		sprite = new Sprite(img);
 		sprite.setScale(1);
+		sprite.setSize(img.getWidth() * 3, img.getHeight() * 3);
 		lasers = new ArrayList<>();
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 0);
 	}
 	
 	public void Update(float deltaTime) {
-		if(Gdx.input.isKeyPressed(Keys.A)) position.x-=deltaTime*speed;
-		if(Gdx.input.isKeyPressed(Keys.D)) position.x+=deltaTime*speed;
-		if(Gdx.input.isButtonJustPressed(0)) {
-			laser = new Laser();
-			lasers.add(laser);
-			float x = position.x + sprite.getWidth()/2 - 4; 
-			float y = sprite.getHeight() - 15;
-			laser.laserPosition.set(x,y);
+		if(Gdx.input.isTouched()) {
+			float touchX = Gdx.input.getX();
+
+			// Check if the touch is on the left or right side of the screen
+			if (touchX < Gdx.graphics.getWidth() / 2) {
+				position.x -= deltaTime * speed;
+			} else {
+				position.x += deltaTime * speed;
+			}
+
+			// Fire laser
+			if(Gdx.input.justTouched()) {
+				Laser laser = new Laser();
+				lasers.add(laser);
+				float x = position.x + sprite.getWidth() / 2 - 4;
+				float y = sprite.getHeight() - 15;
+				laser.laserPosition.set(x, y);
+			}
 		}
-		if(position.x <=0) position.x = 0;
-		if(position.x >=Gdx.graphics.getWidth() - sprite.getWidth()) position.x = Gdx.graphics.getWidth() - sprite.getWidth();
+
+		// within screen
+		if (position.x <= 0) position.x = 0;
+		if (position.x >= Gdx.graphics.getWidth() - sprite.getWidth()) position.x = Gdx.graphics.getWidth() - sprite.getWidth();
 	}
 	
 	public ArrayList<Laser> Draw(SpriteBatch batch) {

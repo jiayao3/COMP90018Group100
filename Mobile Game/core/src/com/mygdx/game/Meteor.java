@@ -16,7 +16,8 @@ public class Meteor {
 	public Meteor() {
 		img_meteor = new Texture("meteor.png");
 		sprite = new Sprite(img_meteor);
-		sprite.setScale(1);
+		sprite.setScale(2);
+		sprite.setSize(img_meteor.getWidth() * 2, img_meteor.getHeight() * 2);
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, Gdx.graphics.getHeight() - sprite.getHeight());
 		gone = false;
 	}
