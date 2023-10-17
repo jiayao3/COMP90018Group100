@@ -24,7 +24,7 @@ public class Spaceship {
 		sprite.setScale(1);
 		sprite.setSize(img.getWidth() * 3, img.getHeight() * 3);
 		lasers = new ArrayList<>();
-		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 0);
+		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 50);
 	}
 	
 	public void Update(float deltaTime) {

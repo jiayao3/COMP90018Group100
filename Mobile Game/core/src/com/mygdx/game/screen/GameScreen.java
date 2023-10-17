@@ -7,24 +7,26 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
 import com.mygdx.game.Meteor;
-import com.mygdx.game.PlayerHealth;
+import com.mygdx.game.GameUI;
 import com.mygdx.game.Spaceship;
 import com.mygdx.game.UFO;
 
 import java.util.ArrayList;
 
 public class GameScreen implements Screen {
-    Game game;
-    Spaceship spaceship;
-    Meteor meteor;
-    ArrayList<Laser> lasers;
-    ArrayList<Meteor> meteors;
-    int counter = 0;
-    UFO ufo;
-    boolean gameOver;
-    BitmapFont endTitle;
-    String title;
-    PlayerHealth playerHealth;
+    private final Game game;
+    private Spaceship spaceship;
+    private Meteor meteor;
+    private ArrayList<Laser> lasers;
+    private ArrayList<Meteor> meteors;
+    private int counter = 0;
+    private UFO ufo;
+    private boolean gameOver;
+    private BitmapFont endTitle;
+    private String title;
+    private GameUI UI;
+    public static boolean isPaused = false;
+
 
     public GameScreen(Game game) {
         this.game = game;
@@ -40,54 +42,64 @@ public class GameScreen implements Screen {
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
-        playerHealth = new PlayerHealth();
+        UI = new GameUI(game);
     }
 
     @Override
     public void render(float delta) {
+
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
-        if(!gameOver) {
-            for(Meteor meteor : meteors) {
-                if(!meteor.gone) {
-                    meteor.Draw(game.batch);
-                    meteor.hitShip(spaceship);
+        if (!isPaused) {
+            if(!gameOver) {
+                for (int i = meteors.size() - 1; i >= 0; i--) {
+                    Meteor meteor = meteors.get(i);
+
+                    if (!meteor.gone) {
+                        meteor.Draw(game.batch);
+                        meteor.hitShip(spaceship);
+                    } else {
+                        meteors.remove(i);
+                    }
                 }
-            }
-            if (spaceship.HP > 0) {
-                lasers = spaceship.Draw(game.batch);
-            }
-
-            if (spaceship.HP <= 0) {
-                spaceship.sprite.setPosition(-1000, 1000);
-                loseScreen();
-            }
-
-            for(Laser laser: lasers) {
-                ufo.detectHit(laser);
-                for(Meteor meteor : meteors) {
-                    meteor.detectHit(laser);
+                if (spaceship.HP > 0) {
+                    lasers = spaceship.Draw(game.batch);
                 }
-            }
-            counter++;
-            if(counter % 40 == 0) {
-                meteor = new Meteor();
-                meteors.add(meteor);
-                meteor.spawnMeteor();
-            }
-            if(ufo.HP >0) {
-                ufo.Draw(game.batch);
-            }
 
-            if(ufo.HP <=0) {
-                ufo.sprite.setPosition(1000, 1000);
-                winScreen();
+                if (spaceship.HP <= 0) {
+                    spaceship.sprite.setPosition(-1000, 1000);
+                    loseScreen();
+                }
+
+                for(Laser laser: lasers) {
+                    ufo.detectHit(laser);
+                    for(Meteor meteor : meteors) {
+                        meteor.detectHit(laser);
+                    }
+                }
+                counter++;
+                if(counter % 40 == 0) {
+                    meteor = new Meteor();
+                    meteors.add(meteor);
+                    meteor.spawnMeteor();
+                }
+                if(ufo.HP >0) {
+                    ufo.Draw(game.batch);
+                }
+
+                if(ufo.HP <=0) {
+                    ufo.sprite.setPosition(1000, 1000);
+                    winScreen();
+                }
+                UI.render(spaceship);
             }
-            playerHealth.renderHearts(game.batch, spaceship);
+            else {
+                endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
+            }
+        } else {
+            UI.renderPauseMenu(this);
         }
-        else {
-            endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
-        }
+
         game.batch.end();
     }
 
@@ -108,7 +120,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        spaceship = new Spaceship();
+        lasers = new ArrayList<>();
+        meteors = new ArrayList<>();
+        ufo = new UFO();
+        gameOver = false;
+        endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
+        title = "";
+        UI = new GameUI(game);
     }
 
     @Override

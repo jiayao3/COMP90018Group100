@@ -34,22 +34,23 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
-        game.batch.draw(playButton, (Gdx.graphics.getWidth()-PLAY_BUTTON_WIDTH)/2, 800, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
-        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-EXIT_BUTTON_WIDTH)/2, 500, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
-        touched();
+        game.batch.draw(playButton, (Gdx.graphics.getWidth()-PLAY_BUTTON_WIDTH)/2, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
+        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-EXIT_BUTTON_WIDTH)/2, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+        pressed();
         game.batch.end();
     }
 
 
 
-    public void touched() {
+    public void pressed() {
         if(Gdx.input.isTouched()) {
             if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - PLAY_BUTTON_WIDTH) / 2 &&
                     Gdx.input.getX() <= (Gdx.graphics.getWidth() + PLAY_BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y - PLAY_BUTTON_HEIGHT/2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT/2) {
+                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
                 this.dispose();
                 game.setScreen(new GameScreen(game));
+                System.out.println("Game started");
             } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - EXIT_BUTTON_WIDTH) / 2 &&
                     Gdx.input.getX() <= (Gdx.graphics.getWidth() + EXIT_BUTTON_WIDTH) / 2 &&
                     Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y - EXIT_BUTTON_HEIGHT/2 &&
@@ -76,7 +77,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
