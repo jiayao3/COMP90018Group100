@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
 
-public class MenuScreen implements Screen, InputProcessor {
+public class MenuScreen implements Screen {
 
     Game game;
     Texture playButton;
@@ -23,7 +23,6 @@ public class MenuScreen implements Screen, InputProcessor {
         this.game = game;
         playButton = new Texture("PlayButton.PNG");
         exitButton = new Texture("ExitButton.PNG");
-        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -41,32 +40,7 @@ public class MenuScreen implements Screen, InputProcessor {
         game.batch.end();
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        if (screenX >= (Gdx.graphics.getWidth() - PLAY_BUTTON_WIDTH) / 2 &&
-//                screenX <= (Gdx.graphics.getWidth() + PLAY_BUTTON_WIDTH) / 2 &&
-//                screenY >= 800 - PLAY_BUTTON_HEIGHT/2 &&
-//                screenY <= 800 + PLAY_BUTTON_HEIGHT/2) {
-//            this.dispose();
-//            game.setScreen(new GameScreen(game));
-//        }
-        return false;
-    }
 
     public void touched() {
         if(Gdx.input.isTouched()) {
@@ -83,31 +57,6 @@ public class MenuScreen implements Screen, InputProcessor {
                 Gdx.app.exit();
             }
         }
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
     }
 
     @Override

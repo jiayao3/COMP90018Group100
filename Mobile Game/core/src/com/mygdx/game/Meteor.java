@@ -43,7 +43,7 @@ public class Meteor {
 
 	public void hitShip(Spaceship ship) {
 		if(ship.sprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
-			ship.HP -= 10;
+			ship.HP -= 1;
 			sprite.setPosition(500, 1000);
 			gone = true;
 		}

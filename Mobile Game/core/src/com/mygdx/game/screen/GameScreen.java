@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
 import com.mygdx.game.Meteor;
+import com.mygdx.game.PlayerHealth;
 import com.mygdx.game.Spaceship;
 import com.mygdx.game.UFO;
 
@@ -23,6 +24,7 @@ public class GameScreen implements Screen {
     boolean gameOver;
     BitmapFont endTitle;
     String title;
+    PlayerHealth playerHealth;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
+        playerHealth = new PlayerHealth();
     }
 
     @Override
@@ -80,6 +83,7 @@ public class GameScreen implements Screen {
                 ufo.sprite.setPosition(1000, 1000);
                 winScreen();
             }
+            playerHealth.renderHearts(game.batch, spaceship);
         }
         else {
             endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
