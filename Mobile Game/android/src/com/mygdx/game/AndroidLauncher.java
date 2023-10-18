@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 public class AndroidLauncher extends AndroidApplication {
 	private static final int RECORD_AUDIO_PERMISSION_CODE = 1;
 	private AudioSensor audioSensor;
+	private GyroscopeSensor gyroscopeSensor;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -22,11 +23,12 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		// initialize AudioSensor here
 		audioSensor = new AudioSensor(this);
+		gyroscopeSensor = new GyroscopeSensor(this);
 
 		// Check and request permissions
 		if (checkPermission()) {
 			// permissions are already granted, start game
-			startRecording();
+			startSensor();
 		} else {
 			// request permissions
 			requestPermission();
@@ -45,9 +47,11 @@ public class AndroidLauncher extends AndroidApplication {
 		ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, RECORD_AUDIO_PERMISSION_CODE);
 	}
 
-	private void startRecording() {
+	private void startSensor() {
 		// start game here
+		gyroscopeSensor.start();
 		audioSensor.startGame();
+
 	}
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -55,10 +59,23 @@ public class AndroidLauncher extends AndroidApplication {
 		if (requestCode == RECORD_AUDIO_PERMISSION_CODE) {
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// permission granted, start the game
-				startRecording();
+				startSensor();
 			} else {
 				// permission denied, ask user to enable for this mode, maybe return to home screen first
 			}
 		}
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		gyroscopeSensor.sensorManager.registerListener(gyroscopeSensor.accelerometerListener, gyroscopeSensor.accelerometerSensor, gyroscopeSensor.sensorManager.SENSOR_DELAY_NORMAL);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		gyroscopeSensor.sensorManager.unregisterListener(gyroscopeSensor.accelerometerListener);
+	}
+
 }

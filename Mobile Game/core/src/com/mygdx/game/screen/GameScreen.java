@@ -28,7 +28,6 @@ public class GameScreen implements Screen {
     public static boolean isPaused = false;
     private int score = 0;
     private float elapsedTime = 0;
-
     private static boolean shooting = false;
 
     public GameScreen(Game game) {
@@ -56,7 +55,7 @@ public class GameScreen implements Screen {
         if (!isPaused) {
             if(!gameOver) {
                 scoreCount(delta);
-                if (shooting) {
+                if (shooting && spaceship != null) {
                     spaceship.shoot();
                 }
 
@@ -166,6 +165,10 @@ public class GameScreen implements Screen {
 
     public static void shoot(boolean state) {
         shooting = state;
+    }
+
+    public static void moveRight(boolean state) {
+
     }
 
 }

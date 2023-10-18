@@ -15,7 +15,7 @@ public class Spaceship {
 	public Sprite sprite;
 	public Laser laser;
 	ArrayList<Laser> lasers;
-	public float speed = 300;
+	public static float speed = 0;
 	public int HP = 5;
 	
 	public Spaceship() {
@@ -26,29 +26,10 @@ public class Spaceship {
 		lasers = new ArrayList<>();
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 50);
 	}
-	
+
 	public void Update(float deltaTime) {
-		if(Gdx.input.isTouched()) {
-			float touchX = Gdx.input.getX();
+		position.x -= deltaTime * speed;
 
-			// Check if the touch is on the left or right side of the screen
-			if (touchX < Gdx.graphics.getWidth() / 2) {
-				position.x -= deltaTime * speed;
-			} else {
-				position.x += deltaTime * speed;
-			}
-
-//			// Fire laser
-//			if(Gdx.input.justTouched()) {
-//				Laser laser = new Laser();
-//				lasers.add(laser);
-//				float x = position.x + sprite.getWidth() / 2 - 4;
-//				float y = sprite.getHeight() - 15;
-//				laser.laserPosition.set(x, y);
-//			}
-		}
-
-		// within screen
 		if (position.x <= 0) position.x = 0;
 		if (position.x >= Gdx.graphics.getWidth() - sprite.getWidth()) position.x = Gdx.graphics.getWidth() - sprite.getWidth();
 	}
@@ -65,6 +46,7 @@ public class Spaceship {
 				}
 			}
 		}
+
 		return lasers;
 	}
 
@@ -79,4 +61,13 @@ public class Spaceship {
 		float y = sprite.getHeight() - 15;
 		laser.laserPosition.set(x, y);
 	}
+
+	public static void move(double degree) {
+		if (degree < 0) {
+			speed = -(float) Math.pow(degree, 2);
+		} else {
+			speed = (float) Math.pow(degree, 2);
+		}
+	}
+
 }

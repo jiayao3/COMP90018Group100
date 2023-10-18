@@ -22,7 +22,7 @@ public class AudioSensor{
     private AudioRecord audioRecord;
     private boolean isRecording = false;
     private boolean aboveThreshold = false;
-    private int threshold = 500; // threshold
+    private int threshold = 600; // threshold
 
     public AudioSensor(Context context) {
         mContext = context;
