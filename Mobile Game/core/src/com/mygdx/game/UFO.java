@@ -24,7 +24,7 @@ public class UFO {
 		sprite.setScale(1);
 		sprite.setSize(img_ufo.getWidth() * 2, img_ufo.getHeight() * 2);
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, Gdx.graphics.getHeight() - sprite.getHeight());
-		HP = 30;
+		HP = 1000;
 		right = true;
 		healthBarTexture = new Texture("health_bar.PNG"); // Create a simple texture for the health bar
 		healthBarSprite = new Sprite(healthBarTexture);

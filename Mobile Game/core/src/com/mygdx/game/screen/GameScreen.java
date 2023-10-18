@@ -29,6 +29,8 @@ public class GameScreen implements Screen {
     private int score = 0;
     private float elapsedTime = 0;
 
+    private static boolean shooting = false;
+
     public GameScreen(Game game) {
         this.game = game;
     }
@@ -54,6 +56,10 @@ public class GameScreen implements Screen {
         if (!isPaused) {
             if(!gameOver) {
                 scoreCount(delta);
+                if (shooting) {
+                    spaceship.shoot();
+                }
+
                 for (int i = meteors.size() - 1; i >= 0; i--) {
                     Meteor meteor = meteors.get(i);
 
@@ -157,4 +163,9 @@ public class GameScreen implements Screen {
         }
         UI.renderScore(score);
     }
+
+    public static void shoot(boolean state) {
+        shooting = state;
+    }
+
 }

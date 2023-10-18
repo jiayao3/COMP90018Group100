@@ -38,14 +38,14 @@ public class Spaceship {
 				position.x += deltaTime * speed;
 			}
 
-			// Fire laser
-			if(Gdx.input.justTouched()) {
-				Laser laser = new Laser();
-				lasers.add(laser);
-				float x = position.x + sprite.getWidth() / 2 - 4;
-				float y = sprite.getHeight() - 15;
-				laser.laserPosition.set(x, y);
-			}
+//			// Fire laser
+//			if(Gdx.input.justTouched()) {
+//				Laser laser = new Laser();
+//				lasers.add(laser);
+//				float x = position.x + sprite.getWidth() / 2 - 4;
+//				float y = sprite.getHeight() - 15;
+//				laser.laserPosition.set(x, y);
+//			}
 		}
 
 		// within screen
@@ -70,5 +70,13 @@ public class Spaceship {
 
 	public int getHP() {
 		return HP;
+	}
+
+	public void shoot() {
+		Laser laser = new Laser();
+		lasers.add(laser);
+		float x = position.x + sprite.getWidth() / 2 - 4;
+		float y = sprite.getHeight() - 15;
+		laser.laserPosition.set(x, y);
 	}
 }
