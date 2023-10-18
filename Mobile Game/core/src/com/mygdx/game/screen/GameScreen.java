@@ -26,7 +26,8 @@ public class GameScreen implements Screen {
     private String title;
     private GameUI UI;
     public static boolean isPaused = false;
-
+    private int score = 0;
+    private float elapsedTime = 0;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -52,6 +53,7 @@ public class GameScreen implements Screen {
         game.batch.begin();
         if (!isPaused) {
             if(!gameOver) {
+                scoreCount(delta);
                 for (int i = meteors.size() - 1; i >= 0; i--) {
                     Meteor meteor = meteors.get(i);
 
@@ -128,6 +130,7 @@ public class GameScreen implements Screen {
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
         UI = new GameUI(game);
+        UI.dispose();
     }
 
     @Override
@@ -143,5 +146,15 @@ public class GameScreen implements Screen {
     public void loseScreen() {
         gameOver = true;
         title = "You Lose!";
+    }
+
+    public void scoreCount(float delta) {
+        elapsedTime += delta;
+
+        if (elapsedTime >= 1.0f) {
+            score += 10;
+            elapsedTime -= 1.0f;
+        }
+        UI.renderScore(score);
     }
 }

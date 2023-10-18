@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -13,17 +14,18 @@ public class GameUI {
     private static final int HEARTSIZE = 50;
     private static final int PAUSEBUTTONSIZE = 150;
     public Vector2 position;
-    private Texture fullHeartTexture;
-    private Texture emptyHeartTexture;
+    private final Texture fullHeartTexture;
+    private final Texture emptyHeartTexture;
     public Sprite sprite;
-    private Texture pauseButtonTexture;
-    private Texture resumeButtonTexture;
-    private Texture menuButtonTexture;
-    private Game game;
+    private final Texture pauseButtonTexture;
+    private final Texture resumeButtonTexture;
+    private final Texture menuButtonTexture;
+    private final Game game;
     private static final int MENU_BUTTON_WIDTH = 500;
     private static final int MENU_BUTTON_HEIGHT = 200;
     private static final int RESUME_BUTTON_Y = 800;
     private static final int MENU_BUTTON_Y = 500;
+    private BitmapFont font;
 
     public GameUI(Game game) {
         fullHeartTexture = new Texture("heart-full.png");
@@ -32,6 +34,8 @@ public class GameUI {
         resumeButtonTexture = new Texture("ResumeButton.PNG");
         menuButtonTexture = new Texture("MenuButton.PNG");
         this.game = game;
+        font = new BitmapFont();
+        font.getData().setScale(3);
     }
 
     public void render(Spaceship spaceship) {
@@ -79,5 +83,13 @@ public class GameUI {
             gameScreen.hide();
             GameScreen.isPaused = false;
         }
+    }
+
+    public void renderScore(int score) {
+        font.draw(game.batch, "Score: " + score, Gdx.graphics.getWidth() - 300, 50 + MARGIN);
+    }
+
+    public void dispose() {
+        font.dispose();
     }
 }
