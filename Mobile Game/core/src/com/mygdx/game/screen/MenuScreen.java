@@ -12,17 +12,18 @@ public class MenuScreen implements Screen {
     Game game;
     Texture playButton;
     Texture exitButton;
-    private static final int PLAY_BUTTON_WIDTH = 500;
-    private static final int PLAY_BUTTON_HEIGHT = 200;
-    private static final int EXIT_BUTTON_WIDTH = 400;
-    private static final int EXIT_BUTTON_HEIGHT = 150;
+    Texture leaderBoardButton;
+    private static final int BUTTON_WIDTH = 500;
+    private static final int BUTTON_HEIGHT = 200;
     private static final int PLAY_BUTTON_Y = 800;
-    private static final int EXIT_BUTTON_Y = 500;
+    private static final int EXIT_BUTTON_Y = 200;
+    private static final int LEADERBOARD_BUTTON_Y = 500;
 
     public MenuScreen(Game game) {
         this.game = game;
         playButton = new Texture("PlayButton.PNG");
         exitButton = new Texture("ExitButton.PNG");
+        leaderBoardButton = new Texture("LeaderBoardButton.PNG");
     }
 
     @Override
@@ -34,8 +35,9 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
-        game.batch.draw(playButton, (Gdx.graphics.getWidth()-PLAY_BUTTON_WIDTH)/2, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
-        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-EXIT_BUTTON_WIDTH)/2, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+        game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         pressed();
         game.batch.end();
     }
@@ -44,18 +46,24 @@ public class MenuScreen implements Screen {
 
     public void pressed() {
         if(Gdx.input.isTouched()) {
-            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - PLAY_BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + PLAY_BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT &&
+            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + BUTTON_HEIGHT &&
                     Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
                 this.dispose();
                 game.setScreen(new GameScreen(game));
                 System.out.println("Game started");
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - EXIT_BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + EXIT_BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y - EXIT_BUTTON_HEIGHT/2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + EXIT_BUTTON_HEIGHT/2) {
+            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + BUTTON_HEIGHT) {
                 Gdx.app.exit();
+            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() >= LEADERBOARD_BUTTON_Y &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
+                this.dispose();
+                game.setScreen(new LeaderBoardScreen(game));
             }
         }
     }
