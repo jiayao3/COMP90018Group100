@@ -1,20 +1,30 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF000000">
-
-  <androidx.camera.view.PreviewView
-      android:id="@+id/previewView"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginBottom="8dp"
-      android:contentDescription="@string/preview_area"
-      android:importantForAccessibility="no"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:orientation="vertical">
+  <LinearLayout
+      android:id="@+id/buttons"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      style="?android:attr/buttonBarStyle" android:gravity="center"
+      android:orientation="horizontal">
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        style="?android:attr/buttonBarButtonStyle" android:layout_height="wrap_content"
+        android:text="@string/load_picture" />
+  </LinearLayout>
+  <FrameLayout
+      android:id="@+id/preview_display_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/no_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/instruction" />
+  </FrameLayout>
+</LinearLayout>

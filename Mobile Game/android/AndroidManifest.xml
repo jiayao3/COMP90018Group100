@@ -24,7 +24,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name=".LauncherActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

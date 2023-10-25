@@ -3,14 +3,13 @@ package com.mygdx.game;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Spaceship {
-	public Vector2 position;
+	public static Vector2 position;
 	private Texture img;
 	public Sprite sprite;
 	public Laser laser;
@@ -67,6 +66,14 @@ public class Spaceship {
 			speed = -(float) Math.pow(degree, 2);
 		} else {
 			speed = (float) Math.pow(degree, 2);
+		}
+	}
+
+	public static void setPosition(float x) {
+		if (x < 0) {
+			speed = -(float) Math.pow(x, 2);
+		} else {
+			speed = (float) Math.pow(x, 2);
 		}
 	}
 
