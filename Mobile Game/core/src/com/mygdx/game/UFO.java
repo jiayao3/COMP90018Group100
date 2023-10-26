@@ -19,7 +19,7 @@ public class UFO {
 	private int maxHealth;
 	
 	public UFO() {
-		img_ufo = new Texture("UFO.png");
+		img_ufo = new Texture("Enemy_1.png");
 		sprite = new Sprite(img_ufo);
 		sprite.setScale(1);
 		sprite.setSize(img_ufo.getWidth() * 2, img_ufo.getHeight() * 2);
