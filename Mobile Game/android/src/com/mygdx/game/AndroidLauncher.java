@@ -10,6 +10,7 @@ import com.google.mediapipe.solutioncore.SolutionGlSurfaceView;
 import com.google.mediapipe.solutions.facemesh.FaceMesh;
 import com.google.mediapipe.solutions.facemesh.FaceMeshOptions;
 import com.google.mediapipe.solutions.facemesh.FaceMeshResult;
+import com.mygdx.game.screen.GameScreen;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -177,6 +178,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		facemesh.setResultListener(
 				faceMeshResult -> {
 					logNoseLandmark(faceMeshResult, /*showPixelValues=*/ false);
+					checkForBlink(faceMeshResult);
 //					glSurfaceView.setRenderData(faceMeshResult);
 //					glSurfaceView.requestRender();
 				});
@@ -239,7 +241,37 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 			Spaceship.setPosition(noseLandmark.getX(), noseLandmark.getY());
 		}
 
-
 	}
+	private boolean leftEyeClosed;
+	private boolean rightEyeClosed;
+
+	private void checkForBlink(FaceMeshResult result) {
+		if (result == null || result.multiFaceLandmarks().isEmpty()) {
+			return;
+		}
+
+		LandmarkProto.NormalizedLandmark leftEyeTop = result.multiFaceLandmarks().get(0).getLandmarkList().get(159);
+		LandmarkProto.NormalizedLandmark leftEyeBottom = result.multiFaceLandmarks().get(0).getLandmarkList().get(145);
+		double leftEyeDistance = Math.abs(leftEyeTop.getY() - leftEyeBottom.getY());
+
+		LandmarkProto.NormalizedLandmark rightEyeTop = result.multiFaceLandmarks().get(0).getLandmarkList().get(386);
+		LandmarkProto.NormalizedLandmark rightEyeBottom = result.multiFaceLandmarks().get(0).getLandmarkList().get(374);
+		double rightEyeDistance = Math.abs(rightEyeTop.getY() - rightEyeBottom.getY());
+
+		double blinkThreshold = 0.02;
+
+		boolean newLeftEyeClosed = leftEyeDistance < blinkThreshold;
+		boolean newRightEyeClosed = rightEyeDistance < blinkThreshold;
+
+		if (newLeftEyeClosed && newRightEyeClosed) {
+			GameScreen.shoot(true);
+		} else {
+			GameScreen.shoot(false);
+		}
+
+		leftEyeClosed = newLeftEyeClosed;
+		rightEyeClosed = newRightEyeClosed;
+	}
+
 
 }
