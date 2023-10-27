@@ -40,7 +40,7 @@ public class FaceMeshRenderer {
                 drawLandmarks(faceMeshResult.multiFaceLandmarks().get(i).getLandmarkList(), FaceMeshConnections.FACEMESH_RIGHT_IRIS);
                 drawLandmarks(faceMeshResult.multiFaceLandmarks().get(i).getLandmarkList(), FaceMeshConnections.FACEMESH_LEFT_IRIS);
             }
-            GameScreen.setConnectionLines(faceConnections);
+            com.mygdx.game.screen.FaceMesh.setConnectionLines(faceConnections);
         }
     }
 

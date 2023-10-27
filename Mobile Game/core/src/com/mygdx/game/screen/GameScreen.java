@@ -33,12 +33,11 @@ public class GameScreen implements Screen {
     private int score = 0;
     private float elapsedTime = 0;
     private static boolean shooting = false;
-    private static ShapeRenderer shapeRenderer;
-    private static ArrayList<ConnectionLine> connectionLines = new ArrayList<>();
+    private FaceMesh faceMesh;
 
     public GameScreen(Game game) {
         this.game = game;
-        shapeRenderer = new ShapeRenderer();
+        faceMesh = new FaceMesh();
     }
 
     @Override
@@ -60,9 +59,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
 
         if (!isPaused) {
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            drawFace();
-            shapeRenderer.end();
+            faceMesh.drawFace();
         }
 
         game.batch.begin();
@@ -182,24 +179,5 @@ public class GameScreen implements Screen {
         shooting = state;
     }
 
-    public void drawFace() {
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
 
-        shapeRenderer.setColor(new Color(0.5f, 0.5f, 0.5f, 0.5f));
-        Gdx.gl.glLineWidth(5f);
-        for (ConnectionLine connectionLine : connectionLines) {
-            // Convert normalized coordinates to screen coordinates
-            float startX = connectionLine.start.x * screenWidth;
-            float startY = (1 - connectionLine.start.y) * screenWidth + 500;
-            float endX = connectionLine.end.x * screenWidth;
-            float endY = (1 - connectionLine.end.y) * screenWidth + 500;
-
-            shapeRenderer.line(startX, startY, endX, endY);
-        }
-    }
-
-    public static void setConnectionLines(ArrayList<ConnectionLine> connectionLines) {
-        GameScreen.connectionLines = connectionLines;
-    }
 }
