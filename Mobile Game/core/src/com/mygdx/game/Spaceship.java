@@ -71,8 +71,8 @@ public class Spaceship {
 
 	public static void setPosition(float x, float y) {
 		if (x != 0) {
-			position.x = x * Gdx.graphics.getWidth();
-			position.y = (1 - y) * Gdx.graphics.getWidth();
+			position.x = x * Gdx.graphics.getWidth() - sprite.getWidth()/2;
+//			position.y = (1 - y) * Gdx.graphics.getWidth();
 		}
 
 	}

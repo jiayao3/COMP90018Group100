@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import android.media.FaceDetector;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -31,13 +32,12 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 	private static final int RECORD_AUDIO_PERMISSION_CODE = 1;
 	private AudioSensor audioSensor;
 	private GyroscopeSensor gyroscopeSensor;
-
 	private static final String TAG = "MainActivity";
-	private FaceController faceController = new FaceController();
 	private FaceMesh facemesh;
 	private static final boolean RUN_ON_GPU = true;
 	private static boolean start = false;
 	private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
+	private FaceMeshRenderer faceMeshRenderer;
 
 	@NonNull
 	@Override
@@ -61,6 +61,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		// initialize AudioSensor here
 		audioSensor = new AudioSensor(this);
 		gyroscopeSensor = new GyroscopeSensor(this);
+		faceMeshRenderer = new FaceMeshRenderer();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(game, config);
 		// Check and request permissions
@@ -179,6 +180,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 				faceMeshResult -> {
 					logNoseLandmark(faceMeshResult, /*showPixelValues=*/ false);
 					checkForBlink(faceMeshResult);
+					faceMeshRenderer.draw(faceMeshResult);
 //					glSurfaceView.setRenderData(faceMeshResult);
 //					glSurfaceView.requestRender();
 				});
@@ -272,6 +274,8 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		leftEyeClosed = newLeftEyeClosed;
 		rightEyeClosed = newRightEyeClosed;
 	}
+
+
 
 
 }
