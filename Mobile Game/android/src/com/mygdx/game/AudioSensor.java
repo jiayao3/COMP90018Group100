@@ -63,7 +63,7 @@ public class AudioSensor{
 
                     // calculate volume
                     double volume = calculateVolume(audioBuffer, bytesRead);
-                    Log.d("AudioSensor", "Volume: " + volume);
+//                    Log.d("AudioSensor", "Volume: " + volume);
                     if (volume > threshold) {
                         if (!aboveThreshold) {
                             aboveThreshold = true;
