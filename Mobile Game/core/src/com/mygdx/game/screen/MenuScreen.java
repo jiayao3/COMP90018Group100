@@ -77,6 +77,7 @@ public class MenuScreen implements Screen {
                 this.dispose();
                 game.setScreen(new SettingScreen(game));
             }
+
         }
     }
 
