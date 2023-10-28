@@ -2,7 +2,10 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
@@ -12,6 +15,7 @@ import com.mygdx.game.Spaceship;
 import com.mygdx.game.UFO;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class GameScreen implements Screen {
     private final Game game;
@@ -29,9 +33,11 @@ public class GameScreen implements Screen {
     private int score = 0;
     private float elapsedTime = 0;
     private static boolean shooting = false;
+    private FaceMesh faceMesh;
 
     public GameScreen(Game game) {
         this.game = game;
+        faceMesh = new FaceMesh();
     }
 
     @Override
@@ -51,9 +57,15 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         ScreenUtils.clear(0, 0, 0, 1);
+
+        if (!isPaused) {
+            faceMesh.drawFace();
+        }
+
         game.batch.begin();
         if (!isPaused) {
             if(!gameOver) {
+                UI.render(spaceship);
                 scoreCount(delta);
                 if (shooting && spaceship != null) {
                     spaceship.shoot();
@@ -98,7 +110,7 @@ public class GameScreen implements Screen {
                     ufo.sprite.setPosition(1000, 1000);
                     winScreen();
                 }
-                UI.render(spaceship);
+
             }
             else {
                 endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
@@ -167,8 +179,5 @@ public class GameScreen implements Screen {
         shooting = state;
     }
 
-    public static void moveRight(boolean state) {
-
-    }
 
 }

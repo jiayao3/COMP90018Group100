@@ -39,8 +39,8 @@ public class LeaderBoardScreen implements Screen {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(skin.getFont("default-font"), skin.getColor("white"));
 
-        float scale = 3.5f;
-        labelStyle.font.getData().setScale(scale);
+//        float scale = 3.5f;
+//        labelStyle.font.getData().setScale(scale);
 
         Label titleLabel = new Label("Leaderboard", labelStyle);
         table.add(titleLabel).colspan(2).padBottom(40).row();
@@ -77,8 +77,8 @@ public class LeaderBoardScreen implements Screen {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(skin.getFont("default-font"), skin.getColor("white"));
 
-        float scale = 3f;
-        labelStyle.font.getData().setScale(scale);
+//        float scale = 3f;
+//        labelStyle.font.getData().setScale(scale);
 
         Label nameLabel = new Label(playerName, labelStyle);
         Label scoreLabel = new Label(Integer.toString(score), labelStyle);

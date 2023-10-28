@@ -11,19 +11,24 @@ public class MenuScreen implements Screen {
 
     Game game;
     Texture playButton;
-    Texture exitButton;
     Texture leaderBoardButton;
-    private static final int BUTTON_WIDTH = 500;
-    private static final int BUTTON_HEIGHT = 200;
+    Texture settingsButton;
+    Texture exitButton;
+
+    private static final int BUTTON_WIDTH = 400;
+    private static final int BUTTON_HEIGHT = 150;
     private static final int PLAY_BUTTON_Y = 800;
+    private static final int LEADERBOARD_BUTTON_Y = 600;
+    private static final int SETTINGS_BUTTON_Y = 400;
     private static final int EXIT_BUTTON_Y = 200;
-    private static final int LEADERBOARD_BUTTON_Y = 500;
+
 
     public MenuScreen(Game game) {
         this.game = game;
         playButton = new Texture("PlayButton.PNG");
-        exitButton = new Texture("ExitButton.PNG");
         leaderBoardButton = new Texture("LeaderBoardButton.PNG");
+        settingsButton = new Texture("LeaderBoardButton.PNG");
+        exitButton = new Texture("ExitButton.PNG");
     }
 
     @Override
@@ -36,8 +41,9 @@ public class MenuScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
         game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        game.batch.draw(settingsButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, SETTINGS_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         pressed();
         game.batch.end();
     }
@@ -64,6 +70,12 @@ public class MenuScreen implements Screen {
                     Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
                 this.dispose();
                 game.setScreen(new LeaderBoardScreen(game));
+            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() >= SETTINGS_BUTTON_Y &&
+                    Gdx.graphics.getHeight() - Gdx.input.getY() <= SETTINGS_BUTTON_Y + BUTTON_HEIGHT) {
+                this.dispose();
+                game.setScreen(new SettingScreen(game));
             }
 
         }
