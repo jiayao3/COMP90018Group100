@@ -139,7 +139,7 @@ public class GameScreen implements Screen {
 
                     if(level > 3){
                         if(life.gone){
-                            double r = Math.random() * 2;
+                            double r = Math.random() * 10;
                             if(r <= 1.0){
                                 life.spawnLife();
                             }
