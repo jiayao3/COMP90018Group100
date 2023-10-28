@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.AttackMode;
 import com.mygdx.game.Boss;
+import com.mygdx.game.ControlMode;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
 import com.mygdx.game.Missile;
@@ -43,6 +45,7 @@ public class GameScreen implements Screen {
     private float elapsedTime = 0;
     private static boolean shooting = false;
     private FaceMesh faceMesh;
+
 
     public GameScreen(Game game) {
         this.game = game;
@@ -254,4 +257,19 @@ public class GameScreen implements Screen {
         levelingUp = false;
     }
 
+//    public static void setAttackMode(AttackMode attackMode) {
+//        GameScreen.attackMode = attackMode;
+//    }
+//
+//    public static void setControlMode(ControlMode controlMode) {
+//        GameScreen.controlMode = controlMode;
+//    }
+//
+//    public static ControlMode getControlMode() {
+//        return controlMode;
+//    }
+//
+//    public static AttackMode getAttackMode() {
+//        return attackMode;
+//    }
 }

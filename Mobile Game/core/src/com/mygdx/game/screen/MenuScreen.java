@@ -27,7 +27,7 @@ public class MenuScreen implements Screen {
         this.game = game;
         playButton = new Texture("PlayButton.PNG");
         leaderBoardButton = new Texture("LeaderBoardButton.PNG");
-        settingsButton = new Texture("LeaderBoardButton.PNG");
+        settingsButton = new Texture("SettingsButton.PNG");
         exitButton = new Texture("ExitButton.PNG");
     }
 

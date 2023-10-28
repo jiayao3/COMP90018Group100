@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.screen.SettingScreen;
 
 public class Spaceship {
 	public static Vector2 position;
@@ -28,18 +29,27 @@ public class Spaceship {
 	}
 
 	public void Update(float deltaTime) {
-		if(Gdx.input.isTouched()) {
+		// Gyroscope control
+		if (SettingScreen.getCurControlMode() == ControlMode.GYROSCOPE_MODE) {
+			position.x -= deltaTime * speed;
+		}
+
+		// Touch screen control
+		if(Gdx.input.isTouched() && SettingScreen.getCurControlMode() == ControlMode.TOUCH_MODE) {
 			float touchX = Gdx.input.getX();
 
 			// Check if the touch is on the left or right side of the screen
 			if (touchX < Gdx.graphics.getWidth() / 2) {
-				position.x -= deltaTime * speed;
+				position.x -= deltaTime * 300;
 			} else {
-				position.x += deltaTime * speed;
+				position.x += deltaTime * 300;
 			}
+		}
 
+		// Tap Attack
+		if(Gdx.input.isTouched() && SettingScreen.getCurAttackMode() == AttackMode.TAP_MODE) {
 			// Fire laser
-			if(Gdx.input.justTouched()) {
+			if (Gdx.input.justTouched()) {
 				Laser laser = new Laser();
 				lasers.add(laser);
 				float x = position.x + sprite.getWidth() / 2 - 4;
@@ -47,7 +57,7 @@ public class Spaceship {
 				laser.laserPosition.set(x, y);
 			}
 
-			if(Gdx.input.isButtonPressed(1)) {
+			if (Gdx.input.isButtonPressed(1)) {
 				Missile missile = new Missile();
 				missiles.add(missile);
 				float x = position.x + sprite.getWidth() / 2 - 4;
@@ -90,11 +100,11 @@ public class Spaceship {
 	}
 
 	public static void move(double degree) {
-//		if (degree < 0) {
-//			speed = -(float) Math.pow(degree, 2);
-//		} else {
-//			speed = (float) Math.pow(degree, 2);
-//		}
+		if (degree < 0) {
+			speed = -(float) Math.pow(degree, 2);
+		} else {
+			speed = (float) Math.pow(degree, 2);
+		}
 	}
 
 	public static void setPosition(float x, float y) {

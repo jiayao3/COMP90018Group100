@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.screen.SettingScreen;
 
 public class AudioSensor{
     private static final int SAMPLE_RATE = 44100; // Sample rate in Hz
@@ -70,14 +71,17 @@ public class AudioSensor{
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.d("AudioSensor", "Above threshold");
-                                    // You can add any other actions you want here
-                                    GameScreen.shoot(true);
+                                    if (SettingScreen.getCurAttackMode() == AttackMode.VOICE_MODE) {
+                                        GameScreen.shoot(true);
+                                        Log.d("AudioSensor", "Above threshold");
+                                    }
                                 }
                             });
                         }
                     } else {
-                        GameScreen.shoot(false);
+                        if (SettingScreen.getCurAttackMode() == AttackMode.VOICE_MODE) {
+                            GameScreen.shoot(false);
+                        }
                         aboveThreshold = false;
                     }
                 }

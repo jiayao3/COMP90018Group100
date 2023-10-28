@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Space;
 
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.screen.SettingScreen;
 
 public class GyroscopeSensor {
     public SensorManager sensorManager;
@@ -43,17 +44,19 @@ public class GyroscopeSensor {
                 double leftTiltThreshold = -10.0; // Example threshold for left tilt
                 double rightTiltThreshold = 10.0; // Example threshold for right tilt
 
-                // Check if the phone is tilted to the left
-                if (tiltAngleDegrees < leftTiltThreshold) {
-                    Spaceship.move(tiltAngleDegrees);
-                }
-                // Check if the phone is tilted to the right
-                else if (tiltAngleDegrees > rightTiltThreshold) {
-                    Spaceship.move(tiltAngleDegrees);
-                }
-                // If the phone is near horizontal, set the background to white
-                else {
-                    Spaceship.move(0);
+                if (SettingScreen.getCurControlMode() == ControlMode.GYROSCOPE_MODE) {
+                    // Check if the phone is tilted to the left
+                    if (tiltAngleDegrees < leftTiltThreshold) {
+                        Spaceship.move(tiltAngleDegrees);
+                    }
+                    // Check if the phone is tilted to the right
+                    else if (tiltAngleDegrees > rightTiltThreshold) {
+                        Spaceship.move(tiltAngleDegrees);
+                    }
+                    // If the phone is near horizontal, set the background to white
+                    else {
+                        Spaceship.move(0);
+                    }
                 }
             }
 

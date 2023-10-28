@@ -12,6 +12,7 @@ import com.google.mediapipe.solutions.facemesh.FaceMesh;
 import com.google.mediapipe.solutions.facemesh.FaceMeshOptions;
 import com.google.mediapipe.solutions.facemesh.FaceMeshResult;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.screen.SettingScreen;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -219,7 +220,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 							noseLandmark.getX(), noseLandmark.getY()));
 		}
 
-		if (Spaceship.getPosition() != null) {
+		if (Spaceship.getPosition() != null && SettingScreen.getCurControlMode() == ControlMode.FACE_MODE) {
 			Spaceship.setPosition(noseLandmark.getX(), noseLandmark.getY());
 		}
 
@@ -245,10 +246,12 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		boolean newLeftEyeClosed = leftEyeDistance < blinkThreshold;
 		boolean newRightEyeClosed = rightEyeDistance < blinkThreshold;
 
-		if (newLeftEyeClosed && newRightEyeClosed) {
-			GameScreen.shoot(true);
-		} else {
-			GameScreen.shoot(false);
+		if (SettingScreen.getCurAttackMode() == AttackMode.EYES_BLINKING_MODE) {
+			if (newLeftEyeClosed && newRightEyeClosed) {
+				GameScreen.shoot(true);
+			} else {
+				GameScreen.shoot(false);
+			}
 		}
 
 		leftEyeClosed = newLeftEyeClosed;
