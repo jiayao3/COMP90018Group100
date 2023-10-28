@@ -7,12 +7,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.Boss;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
+import com.mygdx.game.Missile;
 import com.mygdx.game.Meteor;
+import com.mygdx.game.Minion;
+import com.mygdx.game.Life;
 import com.mygdx.game.GameUI;
 import com.mygdx.game.Spaceship;
-import com.mygdx.game.UFO;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -21,16 +24,22 @@ public class GameScreen implements Screen {
     private final Game game;
     private Spaceship spaceship;
     private Meteor meteor;
+    private Minion minion;
+    private Life life;
     private ArrayList<Laser> lasers;
+    private ArrayList<Missile> missiles;
     private ArrayList<Meteor> meteors;
+    private ArrayList<Minion> minions;
     private int counter = 0;
-    private UFO ufo;
+    private Boss boss;
     private boolean gameOver;
+    public boolean levelingUp;
     private BitmapFont endTitle;
     private String title;
     private GameUI UI;
     public static boolean isPaused = false;
     private int score = 0;
+    public int level = 1;
     private float elapsedTime = 0;
     private static boolean shooting = false;
     private FaceMesh faceMesh;
@@ -45,8 +54,12 @@ public class GameScreen implements Screen {
 
         spaceship = new Spaceship();
         lasers = new ArrayList<>();
+        missiles = new ArrayList<>();
         meteors = new ArrayList<>();
-        ufo = new UFO();
+        minions = new ArrayList<>();
+        life = new Life();
+        boss = new Boss(level);
+        levelingUp = false;
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
@@ -65,52 +78,101 @@ public class GameScreen implements Screen {
         game.batch.begin();
         if (!isPaused) {
             if(!gameOver) {
-                UI.render(spaceship);
-                scoreCount(delta);
-                if (shooting && spaceship != null) {
-                    spaceship.shoot();
-                }
-
-                for (int i = meteors.size() - 1; i >= 0; i--) {
-                    Meteor meteor = meteors.get(i);
-
-                    if (!meteor.gone) {
-                        meteor.Draw(game.batch);
-                        meteor.hitShip(spaceship);
-                    } else {
-                        meteors.remove(i);
+                if(!levelingUp) {
+                    scoreCount(delta);
+                    if (shooting && spaceship != null) {
+                        spaceship.shoot();
                     }
-                }
-                if (spaceship.HP > 0) {
-                    lasers = spaceship.Draw(game.batch);
-                }
 
-                if (spaceship.HP <= 0) {
-                    spaceship.sprite.setPosition(-1000, 1000);
-                    loseScreen();
-                }
+                    for (int i = meteors.size() - 1; i >= 0; i--) {
+                        Meteor meteor = meteors.get(i);
 
-                for(Laser laser: lasers) {
-                    ufo.detectHit(laser);
-                    for(Meteor meteor : meteors) {
-                        meteor.detectHit(laser);
+                        if (!meteor.gone) {
+                            meteor.Draw(game.batch);
+                            meteor.hitShip(spaceship);
+                        } else {
+                            meteors.remove(i);
+                        }
                     }
-                }
-                counter++;
-                if(counter % 40 == 0) {
-                    meteor = new Meteor();
-                    meteors.add(meteor);
-                    meteor.spawnMeteor();
-                }
-                if(ufo.HP >0) {
-                    ufo.Draw(game.batch);
-                }
 
-                if(ufo.HP <=0) {
-                    ufo.sprite.setPosition(1000, 1000);
-                    winScreen();
-                }
+                    for (int i = minions.size() - 1; i >= 0; i--) {
+                        Minion minion = minions.get(i);
 
+                        if (!minion.gone) {
+                            minion.Draw(game.batch);
+                            minion.hitShip(spaceship);
+                        } else {
+                            minions.remove(i);
+                        }
+                    }
+                    if (spaceship.HP > 0) {
+                        lasers = spaceship.Draw(game.batch);
+                    }
+
+                    if (spaceship.HP <= 0) {
+                        spaceship.sprite.setPosition(-1000, 1000);
+                        loseScreen();
+                    }
+
+                    for (Laser laser : lasers) {
+                        boss.detectHit(laser);
+                        for (Meteor meteor : meteors) {
+                            meteor.detectHit(laser);
+                        }
+                        for (Minion minion : minions) {
+                            minion.detectHit(laser);
+                        }
+                    }
+
+                    for (Missile missile : missiles) {
+                        boss.detectHit(missile);
+                        for (Meteor meteor : meteors) {
+                            meteor.detectHit(missile);
+                        }
+                        for (Minion minion : minions) {
+                            minion.detectHit(missile);
+                        }
+                    }
+
+                    counter++;
+                    if (counter % (90 - 15 * level) == 0) {
+                        meteor = new Meteor(level);
+                        meteors.add(meteor);
+                        meteor.spawnMeteor();
+                    }
+                    if(level >= 3){
+                        if (counter % 60 == 0) {
+                            minion = new Minion();
+                            minions.add(minion);
+                            minion.spawnMinion();
+                        }
+                    }
+
+                    if(level > 3){
+                        if(life.gone){
+                            double r = Math.random() * 10;
+                            if(r <= 1.0){
+                                life.spawnLife();
+                            }
+                        }
+                        life.Draw(game.batch);
+                        life.hitShip(spaceship);
+                    }
+
+                    if (boss.HP > 0) {
+                        boss.Draw(game.batch);
+                    }
+
+                    if (boss.HP <= 0) {
+                        boss.sprite.setPosition(1000, 1000);
+                        levelUpScreen();
+                    }
+                    UI.render(spaceship);
+                }
+                else {
+                    endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 350, Gdx.graphics.getHeight()/2);
+                    UI.checkLevelUp(this);
+                }
             }
             else {
                 endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
@@ -142,7 +204,9 @@ public class GameScreen implements Screen {
         spaceship = new Spaceship();
         lasers = new ArrayList<>();
         meteors = new ArrayList<>();
-        ufo = new UFO();
+        minions = new ArrayList<>();
+        boss = new Boss(level);
+        levelingUp = false;
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
@@ -155,9 +219,9 @@ public class GameScreen implements Screen {
         game.batch.dispose();
     }
 
-    public void winScreen() {
-        gameOver = true;
-        title = "You Win!";
+    public void levelUpScreen() {
+        levelingUp = true;
+        title = "Leveling Up! Touch anywhere to proceed";
     }
 
     public void loseScreen() {
@@ -179,5 +243,15 @@ public class GameScreen implements Screen {
         shooting = state;
     }
 
+
+    public void newScreen(){
+        level += 1;
+        spaceship = new Spaceship();
+        lasers = new ArrayList<>();
+        meteors = new ArrayList<>();
+        minions = new ArrayList<>();
+        boss = new Boss(level);
+        levelingUp = false;
+    }
 
 }
