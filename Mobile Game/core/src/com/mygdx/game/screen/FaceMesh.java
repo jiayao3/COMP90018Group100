@@ -19,7 +19,7 @@ public class FaceMesh {
         int screenHeight = Gdx.graphics.getHeight();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(new Color(0.5f, 0.5f, 0.5f, 0.5f));
+        shapeRenderer.setColor(new Color(0.4f, 0.4f, 0.4f, 0.4f));
         Gdx.gl.glLineWidth(5f);
         for (ConnectionLine connectionLine : connectionLines) {
             // Convert normalized coordinates to screen coordinates
