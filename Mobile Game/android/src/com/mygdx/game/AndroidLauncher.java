@@ -58,7 +58,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		Game game = new Game();
 		super.onCreate(savedInstanceState);
 		lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
-		// initialize AudioSensor here
+
 		audioSensor = new AudioSensor(this);
 		gyroscopeSensor = new GyroscopeSensor(this);
 		faceMeshRenderer = new FaceMeshRenderer();
@@ -112,8 +112,6 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		if (inputSource == InputSource.CAMERA) {
 			cameraInput = new CameraInput(this);
 			cameraInput.setNewFrameListener(textureFrame -> facemesh.send(textureFrame));
-//			glSurfaceView.post(this::startCamera);
-//			glSurfaceView.setVisibility(View.VISIBLE);
 		}
 		gyroscopeSensor.sensorManager.registerListener(gyroscopeSensor.accelerometerListener, gyroscopeSensor.accelerometerSensor, gyroscopeSensor.sensorManager.SENSOR_DELAY_NORMAL);
 	}
@@ -123,7 +121,6 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		super.onPause();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.STARTED);
 		if (inputSource == InputSource.CAMERA) {
-//            glSurfaceView.setVisibility(View.GONE);
             cameraInput.close();
         }
 		gyroscopeSensor.sensorManager.unregisterListener(gyroscopeSensor.accelerometerListener);
@@ -133,14 +130,12 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 	protected void onStop() {
 		super.onStop();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
-		// rest of your code...
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.DESTROYED);
-		// rest of your code...
 	}
 
 	/** Sets up the UI components for the live demo with camera input. */
@@ -172,24 +167,12 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		cameraInput = new CameraInput(this);
 		cameraInput.setNewFrameListener(textureFrame -> facemesh.send(textureFrame));
 
-//		glSurfaceView =
-//				new SolutionGlSurfaceView<>(this, facemesh.getGlContext(), facemesh.getGlMajorVersion());
-//		glSurfaceView.setSolutionResultRenderer(new FaceMeshResultGlRenderer());
-//		glSurfaceView.setRenderInputImage(true);
 		facemesh.setResultListener(
 				faceMeshResult -> {
 					logNoseLandmark(faceMeshResult, /*showPixelValues=*/ false);
 					checkForBlink(faceMeshResult);
 					faceMeshRenderer.draw(faceMeshResult);
-//					glSurfaceView.setRenderData(faceMeshResult);
-//					glSurfaceView.requestRender();
 				});
-
-//		FrameLayout frameLayout = findViewById(R.id.preview_display_layout);
-//		frameLayout.removeAllViewsInLayout();
-//		frameLayout.addView(glSurfaceView);
-//		glSurfaceView.setVisibility(View.VISIBLE);
-//		frameLayout.requestLayout();
 	}
 
 	private void startCamera() {
@@ -209,9 +192,6 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 			cameraInput.setNewFrameListener(null);
 			cameraInput.close();
 		}
-//		if (glSurfaceView != null) {
-//			glSurfaceView.setVisibility(View.GONE);
-//		}
 		if (facemesh != null) {
 			facemesh.close();
 		}
@@ -274,8 +254,5 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		leftEyeClosed = newLeftEyeClosed;
 		rightEyeClosed = newRightEyeClosed;
 	}
-
-
-
 
 }

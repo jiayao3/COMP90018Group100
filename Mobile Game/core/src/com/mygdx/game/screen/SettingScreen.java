@@ -17,7 +17,7 @@ import com.mygdx.game.Game;
 
 public class SettingScreen implements Screen {
     private Stage stage;
-    private Game game; // Reference to the Game to switch screens
+    private Game game;
 
     public SettingScreen(final Game game) {
         this.game = game;
@@ -129,5 +129,4 @@ public class SettingScreen implements Screen {
         stage.dispose();
     }
 
-    //... other methods
 }
