@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Spaceship {
 	public static Vector2 position;
 	private Texture img;
-	public Sprite sprite;
+	public static Sprite sprite;
 	public ArrayList<Missile> missiles;
 	public ArrayList<Laser> lasers;
 	public static float speed = 0;
