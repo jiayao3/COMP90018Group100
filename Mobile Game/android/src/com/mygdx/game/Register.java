@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class Register extends AppCompatActivity {
 
     TextInputEditText input_email, input_password;
-    Button reg_btn, exit_btn;
+    Button reg_btn, start_btn;
     FirebaseAuth mAuth;
     TextView login_here;
 
@@ -50,7 +50,7 @@ public class Register extends AppCompatActivity {
         input_password = findViewById(R.id.password);
         reg_btn = findViewById(R.id.register_btn);
         login_here = findViewById(R.id.login_opt);
-        exit_btn = findViewById(R.id.exit_btn);
+        start_btn = findViewById(R.id.startGameButton);
 
         // Checking if the button is clicked
         reg_btn.setOnClickListener(new View.OnClickListener() {
@@ -108,15 +108,19 @@ public class Register extends AppCompatActivity {
         });
 
         // Checking if "X" is clicked
-        exit_btn.setOnClickListener(new View.OnClickListener() {
+        start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // If the button is clicked, it will bring the user to the main activity
-                Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
-                startActivity(intent);
-                // Ends the current activity
-                finish();
+            public void onClick(View v) {
+                startGame();
             }
         });
+    }
+    private void startGame() {
+        // Launch your libGDX game activity
+        Intent intent = new Intent(this, AndroidLauncher.class);
+        startActivity(intent);
+
+        // Finish the current activity
+        finish();
     }
 }

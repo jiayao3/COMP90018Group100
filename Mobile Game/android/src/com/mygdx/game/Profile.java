@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,24 +11,33 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button logout_btn, exit_btn;
+    Button logout_btn, start_btn;
     TextView show_email;
     FirebaseUser user;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_profile);
+
+
 
         auth = FirebaseAuth.getInstance();
 
         // Initialise
         logout_btn = findViewById(R.id.logout);
-        exit_btn = findViewById(R.id.exit_btn);
+        start_btn = findViewById(R.id.startGameButton);
         show_email = findViewById(R.id.details);
         user = auth.getCurrentUser();
 
@@ -48,21 +58,44 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        exit_btn.setOnClickListener(new View.OnClickListener() {
+        start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // If the button is clicked, it will bring the user to the main activity
-                Intent intent = new Intent(getApplicationContext(), LauncherActivity.class);
-                startActivity(intent);
-                // Ends the current activity
-                finish();
+            public void onClick(View v) {
+                startGame();
             }
         });
+    }
+
+    private void startGame() {
+        // Launch your libGDX game activity
+        Intent intent = new Intent(this, AndroidLauncher.class);
+        startActivity(intent);
+
+        // Finish the current activity
+        finish();
+    }
+
+    private void initialFireBase(String referenceName){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = firebaseDatabase.getReference(referenceName);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String inputText = snapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

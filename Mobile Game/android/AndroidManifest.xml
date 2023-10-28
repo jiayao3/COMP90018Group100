@@ -30,10 +30,6 @@
             android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
             android:name=".Profile"
-            android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
-        <activity
-            android:name=".LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
