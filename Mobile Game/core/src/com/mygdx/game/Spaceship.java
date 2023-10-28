@@ -13,8 +13,8 @@ public class Spaceship {
 	public Vector2 position;
 	private Texture img;
 	public Sprite sprite;
-	public Laser laser;
-	ArrayList<Laser> lasers;
+	public ArrayList<Missile> missiles;
+	public ArrayList<Laser> lasers;
 	public static float speed = 0;
 	public int HP = 5;
 	
@@ -24,12 +24,40 @@ public class Spaceship {
 		sprite.setScale(1);
 		sprite.setSize(img.getWidth() * 3, img.getHeight() * 3);
 		lasers = new ArrayList<>();
+		missiles = new ArrayList<>();
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 50);
 	}
 
 	public void Update(float deltaTime) {
-		position.x -= deltaTime * speed;
+		if(Gdx.input.isTouched()) {
+			float touchX = Gdx.input.getX();
 
+			// Check if the touch is on the left or right side of the screen
+			if (touchX < Gdx.graphics.getWidth() / 2) {
+				position.x -= deltaTime * speed;
+			} else {
+				position.x += deltaTime * speed;
+			}
+
+			// Fire laser
+			if(Gdx.input.justTouched()) {
+				Laser laser = new Laser();
+				lasers.add(laser);
+				float x = position.x + sprite.getWidth() / 2 - 4;
+				float y = sprite.getHeight() - 10;
+				laser.laserPosition.set(x, y);
+			}
+
+			if(Gdx.input.isButtonPressed(1)) {
+				Missile missile = new Missile();
+				missiles.add(missile);
+				float x = position.x + sprite.getWidth() / 2 - 4;
+				float y = sprite.getHeight() - 10;
+				missile.mPosition.set(x, y);
+			}
+		}
+
+		// within screen
 		if (position.x <= 0) position.x = 0;
 		if (position.x >= Gdx.graphics.getWidth() - sprite.getWidth()) position.x = Gdx.graphics.getWidth() - sprite.getWidth();
 	}

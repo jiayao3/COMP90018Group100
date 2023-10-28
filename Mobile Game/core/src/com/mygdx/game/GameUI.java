@@ -92,4 +92,10 @@ public class GameUI {
     public void dispose() {
         font.dispose();
     }
+
+    public void checkLevelUp(GameScreen gameScreen){
+        if(Gdx.input.isTouched()){
+            gameScreen.newScreen();
+        }
+    }
 }
