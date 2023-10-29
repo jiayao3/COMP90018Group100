@@ -3,6 +3,8 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -45,11 +47,12 @@ public class GameScreen implements Screen {
     private float elapsedTime = 0;
     private static boolean shooting = false;
     private FaceMesh faceMesh;
-
+    private Texture background;
 
     public GameScreen(Game game) {
         this.game = game;
         faceMesh = new FaceMesh();
+        background = new Texture("gameBackground.png");
     }
 
     @Override
@@ -77,8 +80,8 @@ public class GameScreen implements Screen {
         if (!isPaused) {
             faceMesh.drawFace();
         }
-
         game.batch.begin();
+        renderBackground();
         if (!isPaused) {
             if(!gameOver) {
                 if(!levelingUp) {
@@ -257,6 +260,22 @@ public class GameScreen implements Screen {
         levelingUp = false;
     }
 
+    public void renderBackground() {
+        float backgroundRatio = (float) background.getWidth() / (float) background.getHeight();
+        float newBackgroundWidth = Gdx.graphics.getHeight() * backgroundRatio;
+        game.batch.draw(background, (Gdx.graphics.getWidth() - newBackgroundWidth) / 2, 0, newBackgroundWidth, Gdx.graphics.getHeight());
+
+        game.batch.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, 0.5f));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        game.batch.begin();
+    }
 //    public static void setAttackMode(AttackMode attackMode) {
 //        GameScreen.attackMode = attackMode;
 //    }
