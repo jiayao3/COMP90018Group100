@@ -49,7 +49,6 @@ public class GameScreen implements Screen {
     private FaceMesh faceMesh;
     private Texture background;
 
-
     public GameScreen(Game game) {
         this.game = game;
         faceMesh = new FaceMesh();

@@ -24,7 +24,9 @@ public class MenuScreen implements Screen {
     private static final float LEADERBOARD_BUTTON_Y = Gdx.graphics.getHeight() * 0.26f;
     private static final float SETTINGS_BUTTON_Y = Gdx.graphics.getHeight() * 0.18f;
     private static final float EXIT_BUTTON_Y = Gdx.graphics.getHeight() * 0.1f;
+    private final float TITLE_WIDTH = Gdx.graphics.getWidth() * 0.95f;
     private Texture background;
+    private Texture title;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -33,6 +35,7 @@ public class MenuScreen implements Screen {
         settingsButton = new Texture("SettingsButton.PNG");
         exitButton = new Texture("ExitButton.PNG");
         background = new Texture("backgroundImage.png");
+        title = new Texture("GameTitleImage.png");
     }
 
     @Override
@@ -59,6 +62,9 @@ public class MenuScreen implements Screen {
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         game.batch.begin();
+        float titleRatio = (float) title.getHeight() / (float) title.getWidth();
+        float newTitleHeight = TITLE_WIDTH * titleRatio;
+        game.batch.draw(title, (Gdx.graphics.getWidth() - TITLE_WIDTH) / 2, Gdx.graphics.getHeight() * 0.65f, TITLE_WIDTH, newTitleHeight * 1.4f);
         game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(settingsButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, SETTINGS_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
