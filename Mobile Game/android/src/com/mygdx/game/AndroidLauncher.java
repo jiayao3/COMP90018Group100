@@ -90,8 +90,8 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		// start game here
 		gyroscopeSensor.start();
 		audioSensor.startGame();
-		setupLiveDemoUiComponents();
-		startCamera();
+//		setupLiveDemoUiComponents();
+//		startCamera();
 	}
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
