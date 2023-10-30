@@ -89,8 +89,8 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		// start game here
 		gyroscopeSensor.start();
 		audioSensor.startGame();
-		setupLiveDemoUiComponents();
-		startCamera();
+//		setupLiveDemoUiComponents();
+//		startCamera();
 	}
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -144,10 +144,10 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 	}
 
 	/** Sets up the UI components for the live demo with camera input. */
-	private void setupLiveDemoUiComponents() {
-		stopCurrentPipeline();
-		setupStreamingModePipeline(AndroidLauncher.InputSource.CAMERA);
-	}
+//	private void setupLiveDemoUiComponents() {
+//		stopCurrentPipeline();
+//		setupStreamingModePipeline(AndroidLauncher.InputSource.CAMERA);
+//	}
 
 	@Override
 	protected void onStart() {
@@ -192,17 +192,17 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 //		frameLayout.requestLayout();
 	}
 
-	private void startCamera() {
-		int screenWidth = getResources().getDisplayMetrics().widthPixels;
-		int screenHeight = getResources().getDisplayMetrics().heightPixels;
-
-		cameraInput.start(
-				this,
-				facemesh.getGlContext(),
-				CameraInput.CameraFacing.FRONT,
-				screenWidth,
-				screenHeight);
-	}
+//	private void startCamera() {
+//		int screenWidth = getResources().getDisplayMetrics().widthPixels;
+//		int screenHeight = getResources().getDisplayMetrics().heightPixels;
+//
+//		cameraInput.start(
+//				this,
+//				facemesh.getGlContext(),
+//				CameraInput.CameraFacing.FRONT,
+//				screenWidth,
+//				screenHeight);
+//	}
 
 	private void stopCurrentPipeline() {
 		if (cameraInput != null) {
