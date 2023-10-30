@@ -22,7 +22,7 @@ public class Login extends AppCompatActivity {
 
     TextInputEditText input_email, input_password;
     Button login_btn, start_btn;
-    FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
     TextView register_here;
 
     // Code taken from firebase original documentation

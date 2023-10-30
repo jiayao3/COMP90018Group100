@@ -55,7 +55,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
-		Game game = new Game();
+		Game game = new Game(new AndroidFirebaseInterface());
 		super.onCreate(savedInstanceState);
 		lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
 		// initialize AudioSensor here

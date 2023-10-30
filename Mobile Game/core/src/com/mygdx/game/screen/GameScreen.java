@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.FirebaseInterface;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
 import com.mygdx.game.Meteor;
@@ -34,6 +35,7 @@ public class GameScreen implements Screen {
     private float elapsedTime = 0;
     private static boolean shooting = false;
     private FaceMesh faceMesh;
+    private FirebaseInterface firebaseInterface;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -163,6 +165,7 @@ public class GameScreen implements Screen {
     public void loseScreen() {
         gameOver = true;
         title = "You Lose!";
+        game.getFirebaseInterface().sendScore(score);
     }
 
     public void scoreCount(float delta) {

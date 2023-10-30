@@ -15,7 +15,7 @@ public class Spaceship {
 	public Laser laser;
 	ArrayList<Laser> lasers;
 	public static float speed = 0;
-	public int HP = 5;
+	public int HP = 1;
 	
 	public Spaceship() {
 		img = new Texture("spaceship.png");
