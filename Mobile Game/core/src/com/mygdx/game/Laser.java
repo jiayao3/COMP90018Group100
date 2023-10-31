@@ -23,9 +23,11 @@ public class Laser {
 	
 	
 	public void Draw(SpriteBatch batch) {
-		laserSprite.setPosition(laserPosition.x, laserPosition.y);
-		laserSprite.draw(batch);
-		laserPosition.y += Gdx.graphics.getDeltaTime()*laserSpeed;
+		if(!gone) {
+			laserSprite.setPosition(laserPosition.x, laserPosition.y);
+			laserSprite.draw(batch);
+			laserPosition.y += Gdx.graphics.getDeltaTime() * laserSpeed;
+		}
 	}
 
 

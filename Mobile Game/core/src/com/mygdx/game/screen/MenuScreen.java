@@ -3,7 +3,10 @@ package com.mygdx.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
 
@@ -15,20 +18,24 @@ public class MenuScreen implements Screen {
     Texture settingsButton;
     Texture exitButton;
 
-    private static final int BUTTON_WIDTH = 400;
-    private static final int BUTTON_HEIGHT = 150;
-    private static final int PLAY_BUTTON_Y = 800;
-    private static final int LEADERBOARD_BUTTON_Y = 600;
-    private static final int SETTINGS_BUTTON_Y = 400;
-    private static final int EXIT_BUTTON_Y = 200;
-
+    private static final float BUTTON_WIDTH = Gdx.graphics.getWidth() * 0.45f;
+    private static final float BUTTON_HEIGHT = Gdx.graphics.getHeight() * 0.07f;
+    private static final float PLAY_BUTTON_Y = Gdx.graphics.getHeight() * 0.34f;
+    private static final float LEADERBOARD_BUTTON_Y = Gdx.graphics.getHeight() * 0.26f;
+    private static final float SETTINGS_BUTTON_Y = Gdx.graphics.getHeight() * 0.18f;
+    private static final float EXIT_BUTTON_Y = Gdx.graphics.getHeight() * 0.1f;
+    private final float TITLE_WIDTH = Gdx.graphics.getWidth() * 0.95f;
+    private Texture background;
+    private Texture title;
 
     public MenuScreen(Game game) {
         this.game = game;
         playButton = new Texture("PlayButton.PNG");
         leaderBoardButton = new Texture("LeaderBoardButton.PNG");
-        settingsButton = new Texture("LeaderBoardButton.PNG");
+        settingsButton = new Texture("SettingsButton.PNG");
         exitButton = new Texture("ExitButton.PNG");
+        background = new Texture("backgroundImage.png");
+        title = new Texture("GameTitleImage.png");
     }
 
     @Override
@@ -40,6 +47,24 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
+        float backgroundRatio = (float) background.getWidth() / (float) background.getHeight();
+        float newBackgroundWidth = Gdx.graphics.getHeight() * backgroundRatio;
+        game.batch.draw(background, (Gdx.graphics.getWidth() - newBackgroundWidth) / 2, 0, newBackgroundWidth, Gdx.graphics.getHeight());
+        game.batch.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, 0.2f));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        game.batch.begin();
+        float titleRatio = (float) title.getHeight() / (float) title.getWidth();
+        float newTitleHeight = TITLE_WIDTH * titleRatio;
+        game.batch.draw(title, (Gdx.graphics.getWidth() - TITLE_WIDTH) / 2, Gdx.graphics.getHeight() * 0.65f, TITLE_WIDTH, newTitleHeight * 1.4f);
         game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(settingsButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, SETTINGS_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);

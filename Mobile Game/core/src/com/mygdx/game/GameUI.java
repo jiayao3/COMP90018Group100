@@ -1,10 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.screen.MenuScreen;
@@ -13,12 +17,11 @@ public class GameUI {
     private static final int MARGIN = 15;
     private static final int HEARTSIZE = 50;
     private static final int PAUSEBUTTONSIZE = 150;
-    public Vector2 position;
     private final Texture fullHeartTexture;
     private final Texture emptyHeartTexture;
-    public Sprite sprite;
     private final Texture pauseButtonTexture;
     private final Texture resumeButtonTexture;
+    private final Texture replayButtonTexture;
     private final Texture menuButtonTexture;
     private final Game game;
     private static final int MENU_BUTTON_WIDTH = 500;
@@ -32,6 +35,7 @@ public class GameUI {
         emptyHeartTexture = new Texture("heart-empty.png");
         pauseButtonTexture = new Texture("Pause.png");
         resumeButtonTexture = new Texture("ResumeButton.PNG");
+        replayButtonTexture = new Texture("ReplayButton.png");
         menuButtonTexture = new Texture("MenuButton.PNG");
         this.game = game;
         font = new BitmapFont();
@@ -68,6 +72,28 @@ public class GameUI {
 
     public void renderPauseMenu(GameScreen gameScreen) {
 
+        // Print the current score
+        GlyphLayout layout = new GlyphLayout(font, "Your Current score: " + gameScreen.getScore());
+        // Make it to be at center
+        float stringWidth = layout.width;
+        float stringHeight = layout.height;
+        float x = (Gdx.graphics.getWidth() - stringWidth) / 2;
+        float y = (Gdx.graphics.getHeight() + stringHeight) / 2 + 100;
+        // TODO: Trying to implement a new font
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Karma Future.otf"));
+//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = 24; // set the desired font size
+//        BitmapFont font = generator.generateFont(parameter);
+//        generator.dispose();
+        // Change the size
+        font.getData().setScale(5f, 5f);
+        // Draw shadow color
+        font.setColor(Color.GRAY);
+        font.draw(game.batch, layout, x + 5, y - 5);
+        // Draw main text color
+        font.setColor(Color.YELLOW);
+        font.draw(game.batch, layout, x, y);
+
         game.batch.draw(resumeButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, RESUME_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
         game.batch.draw(menuButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
         if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
@@ -85,11 +111,39 @@ public class GameUI {
         }
     }
 
+    public void renderLose(GameScreen gameScreen) {
+
+        game.batch.draw(replayButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, RESUME_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+        game.batch.draw(menuButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+
+        if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.input.getX() <= (Gdx.graphics.getWidth() + MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() <= RESUME_BUTTON_Y + MENU_BUTTON_HEIGHT &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() >= RESUME_BUTTON_Y) {
+            game.setScreen(new GameScreen(game));
+            gameScreen.hide();
+            GameScreen.gameOver = false;
+        } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.input.getX() <= (Gdx.graphics.getWidth() + MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() >= MENU_BUTTON_Y &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() <= MENU_BUTTON_Y + MENU_BUTTON_HEIGHT) {
+            game.setScreen(new MenuScreen(game));
+            gameScreen.hide();
+            GameScreen.gameOver = false;
+        }
+    }
+
     public void renderScore(int score) {
         font.draw(game.batch, "Score: " + score, Gdx.graphics.getWidth() - 300, 50 + MARGIN);
     }
 
     public void dispose() {
         font.dispose();
+    }
+
+    public void checkLevelUp(GameScreen gameScreen){
+        if(Gdx.input.isTouched()){
+            gameScreen.newScreen();
+        }
     }
 }

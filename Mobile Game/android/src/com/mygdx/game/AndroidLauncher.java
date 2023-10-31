@@ -12,6 +12,7 @@ import com.google.mediapipe.solutions.facemesh.FaceMesh;
 import com.google.mediapipe.solutions.facemesh.FaceMeshOptions;
 import com.google.mediapipe.solutions.facemesh.FaceMeshResult;
 import com.mygdx.game.screen.GameScreen;
+import com.mygdx.game.screen.SettingScreen;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -112,8 +113,6 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		if (inputSource == InputSource.CAMERA) {
 			cameraInput = new CameraInput(this);
 			cameraInput.setNewFrameListener(textureFrame -> facemesh.send(textureFrame));
-//			glSurfaceView.post(this::startCamera);
-//			glSurfaceView.setVisibility(View.VISIBLE);
 		}
 		gyroscopeSensor.sensorManager.registerListener(gyroscopeSensor.accelerometerListener, gyroscopeSensor.accelerometerSensor, gyroscopeSensor.sensorManager.SENSOR_DELAY_NORMAL);
 	}
@@ -123,7 +122,6 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		super.onPause();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.STARTED);
 		if (inputSource == InputSource.CAMERA) {
-//            glSurfaceView.setVisibility(View.GONE);
             cameraInput.close();
         }
 		gyroscopeSensor.sensorManager.unregisterListener(gyroscopeSensor.accelerometerListener);
@@ -133,21 +131,19 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 	protected void onStop() {
 		super.onStop();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
-		// rest of your code...
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.DESTROYED);
-		// rest of your code...
 	}
 
 	/** Sets up the UI components for the live demo with camera input. */
-//	private void setupLiveDemoUiComponents() {
-//		stopCurrentPipeline();
-//		setupStreamingModePipeline(AndroidLauncher.InputSource.CAMERA);
-//	}
+	private void setupLiveDemoUiComponents() {
+		stopCurrentPipeline();
+		setupStreamingModePipeline(AndroidLauncher.InputSource.CAMERA);
+	}
 
 	@Override
 	protected void onStart() {
@@ -172,46 +168,31 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		cameraInput = new CameraInput(this);
 		cameraInput.setNewFrameListener(textureFrame -> facemesh.send(textureFrame));
 
-//		glSurfaceView =
-//				new SolutionGlSurfaceView<>(this, facemesh.getGlContext(), facemesh.getGlMajorVersion());
-//		glSurfaceView.setSolutionResultRenderer(new FaceMeshResultGlRenderer());
-//		glSurfaceView.setRenderInputImage(true);
 		facemesh.setResultListener(
 				faceMeshResult -> {
 					logNoseLandmark(faceMeshResult, /*showPixelValues=*/ false);
 					checkForBlink(faceMeshResult);
 					faceMeshRenderer.draw(faceMeshResult);
-//					glSurfaceView.setRenderData(faceMeshResult);
-//					glSurfaceView.requestRender();
 				});
-
-//		FrameLayout frameLayout = findViewById(R.id.preview_display_layout);
-//		frameLayout.removeAllViewsInLayout();
-//		frameLayout.addView(glSurfaceView);
-//		glSurfaceView.setVisibility(View.VISIBLE);
-//		frameLayout.requestLayout();
 	}
 
-//	private void startCamera() {
-//		int screenWidth = getResources().getDisplayMetrics().widthPixels;
-//		int screenHeight = getResources().getDisplayMetrics().heightPixels;
-//
-//		cameraInput.start(
-//				this,
-//				facemesh.getGlContext(),
-//				CameraInput.CameraFacing.FRONT,
-//				screenWidth,
-//				screenHeight);
-//	}
+	private void startCamera() {
+		int screenWidth = getResources().getDisplayMetrics().widthPixels;
+		int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+		cameraInput.start(
+				this,
+				facemesh.getGlContext(),
+				CameraInput.CameraFacing.FRONT,
+				screenWidth,
+				screenHeight);
+	}
 
 	private void stopCurrentPipeline() {
 		if (cameraInput != null) {
 			cameraInput.setNewFrameListener(null);
 			cameraInput.close();
 		}
-//		if (glSurfaceView != null) {
-//			glSurfaceView.setVisibility(View.GONE);
-//		}
 		if (facemesh != null) {
 			facemesh.close();
 		}
@@ -239,7 +220,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 							noseLandmark.getX(), noseLandmark.getY()));
 		}
 
-		if (Spaceship.getPosition() != null) {
+		if (Spaceship.getPosition() != null && SettingScreen.getCurControlMode() == ControlMode.FACE_MODE) {
 			Spaceship.setPosition(noseLandmark.getX(), noseLandmark.getY());
 		}
 
@@ -265,17 +246,16 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		boolean newLeftEyeClosed = leftEyeDistance < blinkThreshold;
 		boolean newRightEyeClosed = rightEyeDistance < blinkThreshold;
 
-		if (newLeftEyeClosed && newRightEyeClosed) {
-			GameScreen.shoot(true);
-		} else {
-			GameScreen.shoot(false);
+		if (SettingScreen.getCurAttackMode() == AttackMode.EYES_BLINKING_MODE) {
+			if (newLeftEyeClosed && newRightEyeClosed) {
+				GameScreen.shoot(true);
+			} else {
+				GameScreen.shoot(false);
+			}
 		}
 
 		leftEyeClosed = newLeftEyeClosed;
 		rightEyeClosed = newRightEyeClosed;
 	}
-
-
-
 
 }

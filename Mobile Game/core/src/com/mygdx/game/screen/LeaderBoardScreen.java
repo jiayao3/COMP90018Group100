@@ -2,7 +2,10 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -26,12 +29,13 @@ public class LeaderBoardScreen implements Screen {
     private Table table;
     private ScrollPane scrollPane;
     private TextButton backButton;
-
     private Game game;
     private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private Texture background;
 
     public LeaderBoardScreen(Game game) {
         this.game = game;
+        background = new Texture("backgroundImage.png");
     }
 
     @Override
@@ -72,7 +76,6 @@ public class LeaderBoardScreen implements Screen {
                 game.setScreen(new MenuScreen(game));
             }
         });
-
 
         stage.addActor(backButton);
     }
@@ -120,9 +123,24 @@ public class LeaderBoardScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        float backgroundRatio = (float) background.getWidth() / (float) background.getHeight();
+        float newBackgroundWidth = Gdx.graphics.getHeight() * backgroundRatio;
+        game.batch.draw(background, (Gdx.graphics.getWidth() - newBackgroundWidth) / 2, 0, newBackgroundWidth, Gdx.graphics.getHeight());
+        game.batch.end();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, 0.7f));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
         // Draw the stage
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
     }
 
     @Override

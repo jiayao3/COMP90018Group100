@@ -10,16 +10,25 @@ public class Meteor {
 	public Vector2 position;
 	public Sprite sprite;
 	private Texture img_meteor;
-	public float speed = 400;
+	public float speed;
 	public boolean gone;
 	
-	public Meteor() {
+	public Meteor(int level) {
 		img_meteor = new Texture("meteor.png");
 		sprite = new Sprite(img_meteor);
 		sprite.setScale(2);
 		sprite.setSize(img_meteor.getWidth() * 2, img_meteor.getHeight() * 2);
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, Gdx.graphics.getHeight() - sprite.getHeight());
 		gone = false;
+		if(level == 1) {
+			speed = 400;
+		}
+		else if(level == 2) {
+			speed = 700;
+		}
+		else{
+			speed = 800;
+		}
 	}
 	
 	public void Draw(SpriteBatch batch) {
@@ -41,13 +50,19 @@ public class Meteor {
 		}
 	}
 
+	public void detectHit(Missile missile) {
+		if(missile.mSprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
+			sprite.setPosition(500, 1000);
+			gone = true;
+		}
+	}
+
 	public void hitShip(Spaceship ship) {
 		if(ship.sprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
 			ship.HP -= 1;
 			sprite.setPosition(500, 1000);
 			gone = true;
 		}
-		
 	}
 }
 
