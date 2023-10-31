@@ -11,15 +11,14 @@
     tools:context=".Register">
 
     <!--Creating the title "Register"-->
-    <TextView
-        android:text="@string/register"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-        android:layout_marginBottom="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/login_title"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/registertitle"
+        android:background="#00000000" />
 
     <!--Creating the input field for email-->
     <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +90,7 @@
     <!--Creating a "play as guest" button-->
     <ImageButton
         android:id="@+id/startGameButton"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_width="180dp"
         android:layout_height="38dp"
         android:scaleType="fitCenter"
