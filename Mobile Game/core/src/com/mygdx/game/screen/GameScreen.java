@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     private String title;
     private GameUI UI;
     public static boolean isPaused = false;
-    private int score = 0;
+    private static int score = 0;
     public int level = 1;
     private Texture background;
     private float elapsedTime = 0;
@@ -279,6 +279,10 @@ public class GameScreen implements Screen {
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
         game.batch.begin();
+    }
+
+    public static int getScore() {
+        return score;
     }
 //    public static void setAttackMode(AttackMode attackMode) {
 //        GameScreen.attackMode = attackMode;

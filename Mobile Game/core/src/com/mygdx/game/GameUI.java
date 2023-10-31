@@ -1,10 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.screen.GameScreen;
 import com.mygdx.game.screen.MenuScreen;
@@ -67,6 +71,28 @@ public class GameUI {
     }
 
     public void renderPauseMenu(GameScreen gameScreen) {
+
+        // Print the current score
+        GlyphLayout layout = new GlyphLayout(font, "Your Current score: " + gameScreen.getScore());
+        // Make it to be at center
+        float stringWidth = layout.width;
+        float stringHeight = layout.height;
+        float x = (Gdx.graphics.getWidth() - stringWidth) / 2;
+        float y = (Gdx.graphics.getHeight() + stringHeight) / 2 + 100;
+        // TODO: Trying to implement a new font
+//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Karma Future.otf"));
+//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = 24; // set the desired font size
+//        BitmapFont font = generator.generateFont(parameter);
+//        generator.dispose();
+        // Change the size
+        font.getData().setScale(5f, 5f);
+        // Draw shadow color
+        font.setColor(Color.GRAY);
+        font.draw(game.batch, layout, x + 5, y - 5);
+        // Draw main text color
+        font.setColor(Color.YELLOW);
+        font.draw(game.batch, layout, x, y);
 
         game.batch.draw(resumeButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, RESUME_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
         game.batch.draw(menuButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
