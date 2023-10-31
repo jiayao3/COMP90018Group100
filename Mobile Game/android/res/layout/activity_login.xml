@@ -58,7 +58,7 @@
     <ImageButton
         android:id="@+id/login_btn"
         android:layout_marginTop="10dp"
-        android:layout_width="180dp"
+        android:layout_width="165dp"
         android:layout_height="38dp"
         android:scaleType="fitCenter"
         android:background="@drawable/round"
