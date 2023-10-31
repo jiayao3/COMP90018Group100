@@ -10,5 +10,6 @@
     <string name="already_have_an_account_login_here">Already have an account? Login here!</string>
     <string name="logout">Logout</string>
     <string name="profile">Profile</string>
+    <string name="username">username</string>
 
 </resources>

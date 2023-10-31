@@ -23,7 +23,7 @@ public class Profile extends AppCompatActivity {
     Button logout_btn, start_btn;
     TextView show_email;
     FirebaseUser user;
-    private DatabaseReference myRef;
+    public static DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

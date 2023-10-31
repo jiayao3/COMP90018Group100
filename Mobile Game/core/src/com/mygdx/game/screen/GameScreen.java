@@ -44,10 +44,11 @@ public class GameScreen implements Screen {
     public static boolean isPaused = false;
     private int score = 0;
     public int level = 1;
+    private Texture background;
     private float elapsedTime = 0;
     private static boolean shooting = false;
     private FaceMesh faceMesh;
-    private Texture background;
+    private FirebaseInterface firebaseInterface;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -230,9 +231,15 @@ public class GameScreen implements Screen {
         title = "Leveling Up! Touch anywhere to proceed";
     }
 
+    public void winScreen() {
+        gameOver = true;
+        title = "You Win!";
+    }
+
     public void loseScreen() {
         gameOver = true;
         title = "You Lose!";
+        game.getFirebaseInterface().sendScore(score);
     }
 
     public void scoreCount(float delta) {

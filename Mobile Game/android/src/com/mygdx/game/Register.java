@@ -17,12 +17,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Register extends AppCompatActivity {
 
-    TextInputEditText input_email, input_password;
+    TextInputEditText input_email, input_username, input_password;
     Button reg_btn, start_btn;
     FirebaseAuth mAuth;
+    DatabaseReference myRef;
     TextView login_here;
 
     @Override
@@ -44,9 +50,11 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        myRef = FirebaseDatabase.getInstance().getReference();
 
         // Getting the values for each input
         input_email = findViewById(R.id.email);
+        input_username = findViewById(R.id.username);
         input_password = findViewById(R.id.password);
         reg_btn = findViewById(R.id.register_btn);
         login_here = findViewById(R.id.login_opt);
@@ -56,10 +64,11 @@ public class Register extends AppCompatActivity {
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email, password;
+                String email, username, password;
 
                 // Obtaining the typed inputs
                 email = String.valueOf(input_email.getText());
+                username = String.valueOf(input_username.getText());
                 password = String.valueOf(input_password.getText());
 
                 // Checking if the inputs are empty
@@ -67,31 +76,33 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Email cannot be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (TextUtils.isEmpty(username)) {
+                    Toast.makeText(Register.this, "Username cannot be empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (TextUtils.isEmpty(password)) {
                     Toast.makeText(Register.this, "Password cannot be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+
                 // Code taken from firebase original documentation
                 // https://firebase.google.com/docs/auth/android/password-auth#java_3
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Register.this, "Account Succesfully Created.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(intent);
-                                    finish();
+                myRef.child("users").orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Toast.makeText(Register.this, "Username is unavailable.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            registerUser(email, password, username);
+                        }
+                    }
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(Register.this, "Database error.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -122,5 +133,36 @@ public class Register extends AppCompatActivity {
 
         // Finish the current activity
         finish();
+    }
+
+    private void registerUser(String email, String password, String username) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Get the UID of the registered user
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            if (currentUser != null) {
+                                String uid = currentUser.getUid();
+
+                                // Store the username in the Realtime Database under the user's UID
+                                myRef.child("users").child(uid).child("username").setValue(username);
+                                myRef.child("users").child(uid).child("email").setValue(email);
+                                myRef.child("users").child(uid).child("highScore").setValue(0);
+
+
+                                Toast.makeText(Register.this, "Account Successfully Created.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(Register.this, "Account creation failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(Register.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
