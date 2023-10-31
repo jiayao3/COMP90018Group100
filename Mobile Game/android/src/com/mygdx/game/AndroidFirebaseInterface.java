@@ -11,6 +11,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class AndroidFirebaseInterface implements FirebaseInterface{
 
     private FirebaseAuth mAuth;
@@ -55,4 +60,32 @@ public class AndroidFirebaseInterface implements FirebaseInterface{
             });
         }
     }
+
+    @Override
+    public void getLeaderboardData(DataCallback<Map<String, Integer>> callback) {
+        myRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference usersRef = myRef.child("users");
+        final Map<String, Integer> leaderboardData = new HashMap<>();
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // read data from database and store in leaderboardData
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String username = userSnapshot.child("username").getValue(String.class);
+                    int highScore = userSnapshot.child("highScore").getValue(Integer.class);
+                    leaderboardData.put(username, highScore);
+                }
+                callback.onDataReceived(leaderboardData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onError(databaseError.toException());
+            }
+        });
+    }
+
+
 }

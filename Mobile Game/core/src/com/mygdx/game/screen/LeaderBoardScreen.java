@@ -14,6 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mygdx.game.Game;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.mygdx.game.DataCallback;
+
 public class LeaderBoardScreen implements Screen {
 
     private Stage stage;
@@ -35,18 +41,16 @@ public class LeaderBoardScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         table = new Table();
-//        table.setBackground(someDrawable);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(skin.getFont("default-font"), skin.getColor("white"));
 
-//        float scale = 3.5f;
-//        labelStyle.font.getData().setScale(scale);
 
+        table.clear();
         Label titleLabel = new Label("Leaderboard", labelStyle);
         table.add(titleLabel).colspan(2).padBottom(40).row();
 
-        addLeaderboardEntry("Player 1", 100);
-        addLeaderboardEntry("Player 2", 90);
+        // show the leaderboard
+        displayLeaderboardData();
 
         scrollPane = new ScrollPane(table);
         scrollPane.setFillParent(true);
@@ -85,6 +89,29 @@ public class LeaderBoardScreen implements Screen {
 
         table.add(nameLabel).padRight(150);
         table.add(scoreLabel).padBottom(0).row();
+    }
+
+    private void displayLeaderboardData() {
+        game.getFirebaseInterface().getLeaderboardData(new DataCallback<Map<String, Integer>>() {
+            @Override
+            public void onDataReceived(Map<String, Integer> leaderboardData) {
+                // sort the data in reverse order
+                TreeMap<Integer, String> sortedLeaderboard = new TreeMap<>(Collections.reverseOrder());
+                for (Map.Entry<String, Integer> entry : leaderboardData.entrySet()) {
+                    sortedLeaderboard.put(entry.getValue(), entry.getKey());
+                }
+
+                // add the entries to the table
+                for (Map.Entry<Integer, String> entry : sortedLeaderboard.entrySet()) {
+                    addLeaderboardEntry(entry.getValue(), entry.getKey());
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Gdx.app.log("LeaderBoardScreen", "Error fetching leaderboard data: " + e.getMessage());
+            }
+        });
     }
 
     @Override
