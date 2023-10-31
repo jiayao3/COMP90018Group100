@@ -13,12 +13,11 @@ public class GameUI {
     private static final int MARGIN = 15;
     private static final int HEARTSIZE = 50;
     private static final int PAUSEBUTTONSIZE = 150;
-    public Vector2 position;
     private final Texture fullHeartTexture;
     private final Texture emptyHeartTexture;
-    public Sprite sprite;
     private final Texture pauseButtonTexture;
     private final Texture resumeButtonTexture;
+    private final Texture replayButtonTexture;
     private final Texture menuButtonTexture;
     private final Game game;
     private static final int MENU_BUTTON_WIDTH = 500;
@@ -32,6 +31,7 @@ public class GameUI {
         emptyHeartTexture = new Texture("heart-empty.png");
         pauseButtonTexture = new Texture("Pause.png");
         resumeButtonTexture = new Texture("ResumeButton.PNG");
+        replayButtonTexture = new Texture("ReplayButton.png");
         menuButtonTexture = new Texture("MenuButton.PNG");
         this.game = game;
         font = new BitmapFont();
@@ -82,6 +82,28 @@ public class GameUI {
             game.setScreen(new MenuScreen(game));
             gameScreen.hide();
             GameScreen.isPaused = false;
+        }
+    }
+
+    public void renderLose(GameScreen gameScreen) {
+
+        game.batch.draw(replayButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, RESUME_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+        game.batch.draw(menuButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
+
+        if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.input.getX() <= (Gdx.graphics.getWidth() + MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() <= RESUME_BUTTON_Y + MENU_BUTTON_HEIGHT &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() >= RESUME_BUTTON_Y) {
+            game.setScreen(new GameScreen(game));
+            gameScreen.hide();
+            GameScreen.gameOver = false;
+        } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.input.getX() <= (Gdx.graphics.getWidth() + MENU_BUTTON_WIDTH) / 2 &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() >= MENU_BUTTON_Y &&
+                Gdx.graphics.getHeight() - Gdx.input.getY() <= MENU_BUTTON_Y + MENU_BUTTON_HEIGHT) {
+            game.setScreen(new MenuScreen(game));
+            gameScreen.hide();
+            GameScreen.gameOver = false;
         }
     }
 

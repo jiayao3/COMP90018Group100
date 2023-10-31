@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
     private ArrayList<Minion> minions;
     private int counter = 0;
     private Boss boss;
-    private boolean gameOver;
+    public static boolean gameOver = false;
     public boolean levelingUp;
     private BitmapFont endTitle;
     private String title;
@@ -68,7 +68,6 @@ public class GameScreen implements Screen {
         life = new Life();
         boss = new Boss(level);
         levelingUp = false;
-        gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
         UI = new GameUI(game);
@@ -184,6 +183,7 @@ public class GameScreen implements Screen {
             }
             else {
                 endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
+                UI.renderLose(this);
             }
         } else {
             UI.renderPauseMenu(this);
@@ -232,15 +232,11 @@ public class GameScreen implements Screen {
         title = "Leveling Up! Touch anywhere to proceed";
     }
 
-    public void winScreen() {
-        gameOver = true;
-        title = "You Win!";
-    }
-
     public void loseScreen() {
         gameOver = true;
         title = "You Lose!";
         game.getFirebaseInterface().sendScore(score);
+
     }
 
     public void scoreCount(float delta) {
