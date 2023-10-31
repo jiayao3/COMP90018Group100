@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.AttackMode;
 import com.mygdx.game.Boss;
 import com.mygdx.game.ControlMode;
+import com.mygdx.game.FirebaseInterface;
 import com.mygdx.game.Game;
 import com.mygdx.game.Laser;
 import com.mygdx.game.Missile;
