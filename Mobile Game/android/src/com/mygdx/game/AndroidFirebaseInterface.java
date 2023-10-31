@@ -45,7 +45,7 @@ public class AndroidFirebaseInterface implements FirebaseInterface{
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Long currentHighScore = dataSnapshot.getValue(Long.class);
+                        Integer currentHighScore = dataSnapshot.getValue(Integer.class);
                         if (score > currentHighScore) {
                             // Update the "highScore" if the new score is higher
                             scoreRef.setValue(score);
