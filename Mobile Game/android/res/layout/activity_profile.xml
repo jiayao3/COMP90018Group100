@@ -6,30 +6,46 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
+    android:background="@drawable/loginbackground"
     tools:context=".Profile">
 
     <!--Display the user's email-->
+    <ImageView
+        android:id="@+id/welcome"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/welcome"
+        android:background="#00000000" />
     <TextView
         android:id="@+id/details"
         android:text="user_email_here"
         android:textStyle="bold"
-        android:textColor="#080808"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <!--Logout button-->
-    <Button
+    <ImageButton
         android:id="@+id/logout"
         android:text="@string/logout"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="10dp"
+        android:layout_width="180dp"
+        android:layout_height="38dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logout"
+        android:background="@drawable/round"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/startGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Game" />
+        android:layout_marginTop="10dp"
+        android:layout_width="180dp"
+        android:layout_height="38dp"
+        android:scaleType="fitCenter"
+        android:text="Start Game"
+        android:src="@drawable/startgame"
+        android:background="@drawable/round"/>
 
 
 </LinearLayout>
