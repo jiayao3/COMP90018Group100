@@ -86,11 +86,16 @@ public class GameScreen implements Screen {
 
         ScreenUtils.clear(0, 0, 0, 1);
 
+        game.batch.begin();
+        renderBackground();
+        game.batch.end();
+
         if (!isPaused) {
             faceMesh.drawFace();
         }
+
         game.batch.begin();
-        renderBackground();
+
         if (!isPaused) {
             if(!gameOver) {
                 if(!levelingUp) {

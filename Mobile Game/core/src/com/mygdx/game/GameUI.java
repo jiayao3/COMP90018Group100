@@ -164,9 +164,4 @@ public class GameUI {
         }
     }
 
-    public void checkLevelUp(GameScreen gameScreen){
-        if(Gdx.input.isTouched()){
-            gameScreen.newScreen();
-        }
-    }
 }
