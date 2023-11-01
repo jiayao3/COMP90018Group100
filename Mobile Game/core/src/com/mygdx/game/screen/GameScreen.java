@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.AttackMode;
 import com.mygdx.game.Boss;
+import com.mygdx.game.Censor;
 import com.mygdx.game.ControlMode;
 import com.mygdx.game.FirebaseInterface;
 import com.mygdx.game.Game;
@@ -50,7 +52,7 @@ public class GameScreen implements Screen {
     private static boolean shooting = false;
     private FaceMesh faceMesh;
     private FirebaseInterface firebaseInterface;
-
+    private Array<Censor> censors;
     public GameScreen(Game game) {
         this.game = game;
         faceMesh = new FaceMesh();
@@ -65,12 +67,18 @@ public class GameScreen implements Screen {
         missiles = new ArrayList<>();
         meteors = new ArrayList<>();
         minions = new ArrayList<>();
+        censors = new Array<>();
         life = new Life();
         boss = new Boss(level);
         levelingUp = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
         UI = new GameUI(game);
+
+
+        // add censors to the list with desired coordinates (can remove this after)
+        censors.add(new Censor(new Vector2(100, 200), new Vector2(300, 400)));
+        censors.add(new Censor(new Vector2(400, 500), new Vector2(600, 700)));
     }
 
     @Override
@@ -100,6 +108,10 @@ public class GameScreen implements Screen {
                         } else {
                             meteors.remove(i);
                         }
+                    }
+
+                    for (Censor censor : censors) {
+                        censor.draw(game.batch);
                     }
 
                     for (int i = minions.size() - 1; i >= 0; i--) {

@@ -50,16 +50,11 @@ public class Spaceship {
 		if(Gdx.input.isTouched() && SettingScreen.getCurAttackMode() == AttackMode.TAP_MODE) {
 			// Fire laser
 			if (Gdx.input.justTouched()) {
-				Missile missile = new Missile();
-				missiles.add(missile);
+				Laser laser = new Laser();
+				lasers.add(laser);
 				float x = position.x + sprite.getWidth() / 2 - 4;
 				float y = sprite.getHeight() - 10;
-				missile.mPosition.set(x, y);
-//				Laser laser = new Laser();
-//				lasers.add(laser);
-//				float x = position.x + sprite.getWidth() / 2 - 4;
-//				float y = sprite.getHeight() - 10;
-//				laser.laserPosition.set(x, y);
+				laser.laserPosition.set(x, y);
 			}
 
 			if (Gdx.input.isButtonPressed(1)) {
