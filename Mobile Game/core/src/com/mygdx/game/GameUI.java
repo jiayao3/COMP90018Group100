@@ -114,6 +114,13 @@ public class GameUI {
         float spacing = 10; // spacing between the two lines
         float yText = Gdx.graphics.getHeight() / 2 + layoutText.height + spacing / 2 + 200;
         float yScore = Gdx.graphics.getHeight() / 2 - layoutScore.height - spacing / 2 + 200;
+        // Add background for texts
+//        Texture backgroundTexture = new Texture("textured-black-background.png");
+//        float padding = 20; // padding around the text
+//        game.batch.draw(backgroundTexture, xText - padding, yScore - padding,
+//                Math.max(layoutText.width, layoutScore.width) + 2 * padding,
+//                (layoutText.height + layoutScore.height + spacing) + 2 * padding);
+
         // Draw both strings
         pauseFont.setColor(Color.valueOf("#FFFF00"));
         pauseFont.draw(game.batch, layoutText, xText, yText);
@@ -171,6 +178,7 @@ public class GameUI {
 
     public void dispose() {
         font.dispose();
+        pauseFont.dispose();
     }
 
     public void checkLevelUp(GameScreen gameScreen){
