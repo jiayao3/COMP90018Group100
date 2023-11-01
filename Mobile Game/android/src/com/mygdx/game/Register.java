@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Register extends AppCompatActivity {
 
     TextInputEditText input_email, input_username, input_password;
-    Button reg_btn, start_btn;
+    ImageButton reg_btn, start_btn;
     FirebaseAuth mAuth;
     DatabaseReference myRef;
     TextView login_here;

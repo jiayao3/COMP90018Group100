@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Profile extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button logout_btn, start_btn;
+    ImageButton logout_btn, start_btn;
     TextView show_email;
     FirebaseUser user;
     public static DatabaseReference myRef;
