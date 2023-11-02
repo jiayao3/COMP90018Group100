@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.AttackMode;
 import com.mygdx.game.ControlMode;
 import com.mygdx.game.Game;
+import com.mygdx.game.Items.CustomisedButtonStyle;
 
 public class SettingScreen implements Screen {
     private final String NOT_SELECTED_BUTTON_COLOR = "#255f85";
@@ -143,30 +144,30 @@ public class SettingScreen implements Screen {
 
 
         // Add back button style - background
-        Texture backButtonTexture_up = new Texture(Gdx.files.internal("buttonBackground.PNG"));
-        Texture backButtonTexture_down = new Texture(Gdx.files.internal("buttonBackground_down.PNG"));
+//        Texture backButtonTexture_up = new Texture(Gdx.files.internal("buttonBackground.PNG"));
+//        Texture backButtonTexture_down = new Texture(Gdx.files.internal("buttonBackground_down.PNG"));
+//
+//        Drawable backDrawable_up = new TextureRegionDrawable(new TextureRegion(backButtonTexture_up));
+//        Drawable backDrawable_down = new TextureRegionDrawable(new TextureRegion(backButtonTexture_down));
+//
+//        TextButton.TextButtonStyle backStyle = new TextButton.TextButtonStyle();
+//        backStyle.up = backDrawable_up; // img when normal
+//        backStyle.down = backDrawable_down; // img when clicked
+//
+//
+//        // Add back button style - font
+//        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/light_pixel-7.ttf"));
+//        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = 50; // set font size
+//        BitmapFont buttonFont = generator.generateFont(parameter);
+//        generator.dispose();
+//        skin.add("buttonFont", buttonFont);
+//
+//        backStyle.font = skin.getFont("buttonFont");
+//        backStyle.fontColor = Color.BLACK;
+//        backStyle.downFontColor = Color.GRAY;
 
-        Drawable backDrawable_up = new TextureRegionDrawable(new TextureRegion(backButtonTexture_up));
-        Drawable backDrawable_down = new TextureRegionDrawable(new TextureRegion(backButtonTexture_down));
-
-        TextButton.TextButtonStyle backStyle = new TextButton.TextButtonStyle();
-        backStyle.up = backDrawable_up; // img when normal
-        backStyle.down = backDrawable_down; // img when clicked
-
-
-        // Add back button style - font
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("font/light_pixel-7.ttf"));
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 50; // set font size
-        BitmapFont buttonFont = generator.generateFont(parameter);
-        generator.dispose();
-        skin.add("buttonFont", buttonFont);
-
-        backStyle.font = skin.getFont("buttonFont");
-        backStyle.fontColor = Color.BLACK;
-        backStyle.downFontColor = Color.GRAY;
-
-
+        TextButton.TextButtonStyle backStyle = new CustomisedButtonStyle().getButtonStyle();
         // Display back button
         TextButton backButton = new TextButton("BACK", backStyle);
 
