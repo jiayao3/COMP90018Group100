@@ -34,7 +34,7 @@ public class AndroidFirebaseInterface implements FirebaseInterface{
             myRef = FirebaseDatabase.getInstance().getReference();
         }
 
-        if (Login.mAuth != null) {
+        if (Login.mAuth.getCurrentUser() != null) {
 //            Log.d("score sent", String.valueOf(score));
 //            Log.d("uid", String.valueOf(score));
             FirebaseUser currentUser = Login.mAuth.getCurrentUser();

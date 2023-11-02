@@ -201,6 +201,12 @@ public class SettingScreen implements Screen {
                 } else {
                     SettingScreen.curAttackMode = attackMode;
                 }
+                descriptionLabel.setText(description);
+                if (controlMode != null) {
+                    SettingScreen.curControlMode = controlMode;
+                } else {
+                    SettingScreen.curAttackMode = attackMode;
+                }
             }
         });
     }

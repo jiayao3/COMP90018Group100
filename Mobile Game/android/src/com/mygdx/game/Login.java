@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     TextInputEditText input_email, input_password;
-    Button login_btn, start_btn;
+    ImageButton login_btn, start_btn;
     public static FirebaseAuth mAuth;
     TextView register_here;
 
