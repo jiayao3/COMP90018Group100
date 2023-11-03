@@ -167,7 +167,7 @@ public class SettingScreen implements Screen {
 //        backStyle.fontColor = Color.BLACK;
 //        backStyle.downFontColor = Color.GRAY;
 
-        TextButton.TextButtonStyle backStyle = new CustomisedButtonStyle().getButtonStyle();
+        TextButton.TextButtonStyle backStyle = new CustomisedButtonStyle(BACK_BUTTON_WIDTH, BACK_BUTTON_HEIGHT).getButtonStyle();
         // Display back button
         TextButton backButton = new TextButton("BACK", backStyle);
 

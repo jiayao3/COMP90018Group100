@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
+import com.mygdx.game.Items.CustomisedButtonStyle;
 
 
 public class MenuScreen implements Screen {
@@ -87,12 +87,12 @@ public class MenuScreen implements Screen {
         stage.addActor(titleImage);
 
 
-        // Initialize buttons with a Skin or a Drawable
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json")); // You will usually want to use a Skin here.
-        playButton = new TextButton("Play", skin); // Add your drawable or skin
-        leaderBoardButton = new TextButton("Leaderboard", skin);
-        settingsButton = new TextButton("Settings", skin);
-        exitButton = new TextButton("Exit", skin);
+        // Initialize buttons with a style
+        TextButton.TextButtonStyle buttonStyle = new CustomisedButtonStyle(BUTTON_WIDTH, BUTTON_HEIGHT).getButtonStyle();
+        playButton = new TextButton("PLAY", buttonStyle);
+        leaderBoardButton = new TextButton("Leaderboard", buttonStyle);
+        settingsButton = new TextButton("Settings", buttonStyle);
+        exitButton = new TextButton("Exit", buttonStyle);
 
         // Set positions and sizes for buttons, add them to stage, and add listeners
         setUpButton(playButton, PLAY_BUTTON_Y, new ChangeListener() {
@@ -111,7 +111,21 @@ public class MenuScreen implements Screen {
             }
         });
 
-        // Repeat for other buttons...
+        setUpButton(settingsButton, SETTINGS_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                game.setScreen(new SettingScreen(game));
+            }
+        });
+
+        setUpButton(exitButton, EXIT_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                Gdx.app.exit();
+            }
+        });
 
         // Add input processor
         Gdx.input.setInputProcessor(stage);
@@ -171,36 +185,36 @@ public class MenuScreen implements Screen {
 
 
 
-    public void pressed() {
-        if(Gdx.input.isTouched()) {
-            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + BUTTON_HEIGHT &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
-                this.dispose();
-                game.setScreen(new GameScreen(game));
-                System.out.println("Game started");
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + BUTTON_HEIGHT) {
-                Gdx.app.exit();
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= LEADERBOARD_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
-                this.dispose();
-                game.setScreen(new LeaderBoardScreen(game));
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= SETTINGS_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= SETTINGS_BUTTON_Y + BUTTON_HEIGHT) {
-                this.dispose();
-                game.setScreen(new SettingScreen(game));
-            }
-
-        }
-    }
+//    public void pressed() {
+//        if(Gdx.input.isTouched()) {
+//            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + BUTTON_HEIGHT &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
+//                this.dispose();
+//                game.setScreen(new GameScreen(game));
+//                System.out.println("Game started");
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + BUTTON_HEIGHT) {
+//                Gdx.app.exit();
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= LEADERBOARD_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
+//                this.dispose();
+//                game.setScreen(new LeaderBoardScreen(game));
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= SETTINGS_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= SETTINGS_BUTTON_Y + BUTTON_HEIGHT) {
+//                this.dispose();
+//                game.setScreen(new SettingScreen(game));
+//            }
+//
+//        }
+//    }
 
     @Override
     public void resize(int width, int height) {
