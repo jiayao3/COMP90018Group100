@@ -14,12 +14,14 @@ public class CustomisedButtonStyle {
     private String BACKGROUND_UP_IMAGE = "buttonBackground.PNG";
     private String BACKGROUND_DOWN_IMAGE = "buttonBackground_down.PNG";
     private String FONT = "font/light_pixel-7.ttf";
-    private int FONT_SIZE = 50;
+//    private int FONT_SIZE = 55;
+    private static final float FONT_SIZE_PROPORTION = 0.35f;
+
     private Color FONT_COLOR = Color.BLACK;
     private Color DOWN_FONT_COLOR = Color.GRAY;
     private TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
 
-    public CustomisedButtonStyle() {
+    public CustomisedButtonStyle(float buttonWidth, float buttonHeight) {
         Texture backButtonTexture_up = new Texture(Gdx.files.internal(BACKGROUND_UP_IMAGE));
         Texture backButtonTexture_down = new Texture(Gdx.files.internal(BACKGROUND_DOWN_IMAGE));
 
@@ -34,7 +36,7 @@ public class CustomisedButtonStyle {
         // Add back button style - font
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONT));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = FONT_SIZE; // set font size
+        parameter.size = Math.round(buttonHeight * FONT_SIZE_PROPORTION);; // set font size
         BitmapFont buttonFont = generator.generateFont(parameter);
         generator.dispose();
 

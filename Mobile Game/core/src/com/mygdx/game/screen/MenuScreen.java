@@ -1,5 +1,6 @@
 package com.mygdx.game.screen;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -7,16 +8,38 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Game;
+
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.game.Items.CustomisedButtonStyle;
+
 
 public class MenuScreen implements Screen {
 
     Game game;
-    Texture playButton;
-    Texture leaderBoardButton;
-    Texture settingsButton;
-    Texture exitButton;
+//    Texture playButton;
+//    Texture leaderBoardButton;
+//    Texture settingsButton;
+//    Texture exitButton;
+    TextButton playButton;
+    TextButton leaderBoardButton;
+    TextButton settingsButton;
+    TextButton exitButton;
+    Stage stage;
+    Image backgroundImage;
+    Texture titleTexture;
+
+
+
 
     private static final float BUTTON_WIDTH = Gdx.graphics.getWidth() * 0.45f;
     private static final float BUTTON_HEIGHT = Gdx.graphics.getHeight() * 0.07f;
@@ -28,15 +51,94 @@ public class MenuScreen implements Screen {
     private Texture background;
     private Texture title;
 
-    public MenuScreen(Game game) {
+    public MenuScreen(final Game game) {
+//        this.game = game;
+//        playButton = new Texture("PlayButton.PNG");
+//        leaderBoardButton = new Texture("LeaderBoardButton.PNG");
+//        settingsButton = new Texture("SettingsButton.PNG");
+//        exitButton = new Texture("ExitButton.PNG");
+//        background = new Texture("backgroundImage.png");
+//        title = new Texture("GameTitleImage.png");
+
         this.game = game;
-        playButton = new Texture("PlayButton.PNG");
-        leaderBoardButton = new Texture("LeaderBoardButton.PNG");
-        settingsButton = new Texture("SettingsButton.PNG");
-        exitButton = new Texture("ExitButton.PNG");
-        background = new Texture("backgroundImage.png");
-        title = new Texture("GameTitleImage.png");
+        stage = new Stage();
+
+        // Load the background texture
+        Texture bgTexture = new Texture("backgroundImage.png");
+        bgTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        // Create an image actor from the texture
+        backgroundImage = new Image(bgTexture);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        backgroundImage.setPosition(0, 0);
+        // Add the background image to the stage as the first actor
+        stage.addActor(backgroundImage);
+
+
+        // Load the title texture and create an Image actor
+        titleTexture = new Texture("GameTitleImage.png");
+        Image titleImage = new Image(titleTexture);
+        // Set the size and position of the title image
+        float titleRatio = (float) titleTexture.getWidth() / (float) titleTexture.getHeight();
+        float titleWidth = TITLE_WIDTH;
+        float titleHeight = titleWidth / titleRatio;
+        titleImage.setSize(titleWidth, titleHeight);
+        titleImage.setPosition((Gdx.graphics.getWidth() - titleWidth) / 2, Gdx.graphics.getHeight() * 0.65f);
+        // Add the title image to the stage
+        stage.addActor(titleImage);
+
+
+        // Initialize buttons with a style
+        TextButton.TextButtonStyle buttonStyle = new CustomisedButtonStyle(BUTTON_WIDTH, BUTTON_HEIGHT).getButtonStyle();
+        playButton = new TextButton("PLAY", buttonStyle);
+        leaderBoardButton = new TextButton("Leaderboard", buttonStyle);
+        settingsButton = new TextButton("Settings", buttonStyle);
+        exitButton = new TextButton("Exit", buttonStyle);
+
+        // Set positions and sizes for buttons, add them to stage, and add listeners
+        setUpButton(playButton, PLAY_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                game.setScreen(new GameScreen(game));
+            }
+        });
+
+        setUpButton(leaderBoardButton, LEADERBOARD_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                game.setScreen(new LeaderBoardScreen(game));
+            }
+        });
+
+        setUpButton(settingsButton, SETTINGS_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                game.setScreen(new SettingScreen(game));
+            }
+        });
+
+        setUpButton(exitButton, EXIT_BUTTON_Y, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MenuScreen.this.dispose();
+                Gdx.app.exit();
+            }
+        });
+
+        // Add input processor
+        Gdx.input.setInputProcessor(stage);
     }
+
+    private void setUpButton(TextButton button, float y, ChangeListener listener) {
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, y);
+        button.addListener(listener);
+        stage.addActor(button);
+    }
+
+
 
     @Override
     public void show() {
@@ -45,66 +147,74 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
-        game.batch.begin();
-        float backgroundRatio = (float) background.getWidth() / (float) background.getHeight();
-        float newBackgroundWidth = Gdx.graphics.getHeight() * backgroundRatio;
-        game.batch.draw(background, (Gdx.graphics.getWidth() - newBackgroundWidth) / 2, 0, newBackgroundWidth, Gdx.graphics.getHeight());
-        game.batch.end();
+//        ScreenUtils.clear(0, 0, 0, 1);
+//        game.batch.begin();
+//        float backgroundRatio = (float) background.getWidth() / (float) background.getHeight();
+//        float newBackgroundWidth = Gdx.graphics.getHeight() * backgroundRatio;
+//        game.batch.draw(background, (Gdx.graphics.getWidth() - newBackgroundWidth) / 2, 0, newBackgroundWidth, Gdx.graphics.getHeight());
+//        game.batch.end();
+//
+//        Gdx.gl.glEnable(GL20.GL_BLEND);
+//        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+//        ShapeRenderer shapeRenderer = new ShapeRenderer();
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(new Color(0, 0, 0, 0.2f));
+//        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        shapeRenderer.end();
+//        Gdx.gl.glDisable(GL20.GL_BLEND);
+//
+//        game.batch.begin();
+//        float titleRatio = (float) title.getHeight() / (float) title.getWidth();
+//        float newTitleHeight = TITLE_WIDTH * titleRatio;
+//        game.batch.draw(title, (Gdx.graphics.getWidth() - TITLE_WIDTH) / 2, Gdx.graphics.getHeight() * 0.65f, TITLE_WIDTH, newTitleHeight * 1.4f);
+//        game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+//        game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+//        game.batch.draw(settingsButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, SETTINGS_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+//        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+//        pressed();
+//        game.batch.end();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(0, 0, 0, 0.2f));
-        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        shapeRenderer.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
+        // Update the stage
+        stage.act(delta);
 
-        game.batch.begin();
-        float titleRatio = (float) title.getHeight() / (float) title.getWidth();
-        float newTitleHeight = TITLE_WIDTH * titleRatio;
-        game.batch.draw(title, (Gdx.graphics.getWidth() - TITLE_WIDTH) / 2, Gdx.graphics.getHeight() * 0.65f, TITLE_WIDTH, newTitleHeight * 1.4f);
-        game.batch.draw(playButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        game.batch.draw(leaderBoardButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, LEADERBOARD_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        game.batch.draw(settingsButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, SETTINGS_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        game.batch.draw(exitButton, (Gdx.graphics.getWidth()-BUTTON_WIDTH)/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        pressed();
-        game.batch.end();
+        // Draw the stage
+        stage.draw();
     }
 
 
 
-    public void pressed() {
-        if(Gdx.input.isTouched()) {
-            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + BUTTON_HEIGHT &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
-                this.dispose();
-                game.setScreen(new GameScreen(game));
-                System.out.println("Game started");
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + BUTTON_HEIGHT) {
-                Gdx.app.exit();
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= LEADERBOARD_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
-                this.dispose();
-                game.setScreen(new LeaderBoardScreen(game));
-            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
-                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() >= SETTINGS_BUTTON_Y &&
-                    Gdx.graphics.getHeight() - Gdx.input.getY() <= SETTINGS_BUTTON_Y + BUTTON_HEIGHT) {
-                this.dispose();
-                game.setScreen(new SettingScreen(game));
-            }
-
-        }
-    }
+//    public void pressed() {
+//        if(Gdx.input.isTouched()) {
+//            if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= PLAY_BUTTON_Y + BUTTON_HEIGHT &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= PLAY_BUTTON_Y) {
+//                this.dispose();
+//                game.setScreen(new GameScreen(game));
+//                System.out.println("Game started");
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= EXIT_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= EXIT_BUTTON_Y + BUTTON_HEIGHT) {
+//                Gdx.app.exit();
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= LEADERBOARD_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= LEADERBOARD_BUTTON_Y + BUTTON_HEIGHT) {
+//                this.dispose();
+//                game.setScreen(new LeaderBoardScreen(game));
+//            } else if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2 &&
+//                    Gdx.input.getX() <= (Gdx.graphics.getWidth() + BUTTON_WIDTH) / 2 &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() >= SETTINGS_BUTTON_Y &&
+//                    Gdx.graphics.getHeight() - Gdx.input.getY() <= SETTINGS_BUTTON_Y + BUTTON_HEIGHT) {
+//                this.dispose();
+//                game.setScreen(new SettingScreen(game));
+//            }
+//
+//        }
+//    }
 
     @Override
     public void resize(int width, int height) {
@@ -127,5 +237,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        titleTexture.dispose();
     }
 }
