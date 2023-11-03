@@ -89,27 +89,42 @@ public class GameUI {
     public void renderPauseMenu(GameScreen gameScreen) {
 
         // Print the current score
-        GlyphLayout layout = new GlyphLayout(font, "Your Current score: " + gameScreen.getScore());
-        // Make it to be at center
-        float stringWidth = layout.width;
-        float stringHeight = layout.height;
-        float x = (Gdx.graphics.getWidth() - stringWidth) / 2;
-        float y = (Gdx.graphics.getHeight() + stringHeight) / 2 + 100;
-        // TODO: Trying to implement a new font
-//        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Karma Future.otf"));
-//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-//        parameter.size = 24; // set the desired font size
-//        BitmapFont font = generator.generateFont(parameter);
-//        generator.dispose();
-        // Change the size
-        font.getData().setScale(5f, 5f);
-        // Draw shadow color
-        font.setColor(Color.GRAY);
-        font.draw(game.batch, layout, x + 5, y - 5);
-        // Draw main text color
-        font.setColor(Color.YELLOW);
-        font.draw(game.batch, layout, x, y);
+        // Define the words use pauseFont
+//        GlyphLayout layout = new GlyphLayout(pauseFont, "Your Current score: \n" + gameScreen.getScore());
+//        // Define the position - Make it to be at center based on the string
+//        float stringWidth = layout.width;
+//        float stringHeight = layout.height;
+//        float x = (Gdx.graphics.getWidth() - stringWidth) / 2;
+//        float y = (Gdx.graphics.getHeight() + stringHeight) / 2 + 100;
+//        // Draw shadow color
+//        pauseFont.setColor(Color.GRAY);
+//        pauseFont.draw(game.batch, layout, x + 5, y - 5);
+//        // Draw main text color
+//        pauseFont.setColor(Color.YELLOW);
+//        pauseFont.draw(game.batch, layout, x, y);
 
+        // Create two separate GlyphLayout objects
+        GlyphLayout layoutText = new GlyphLayout(pauseFont, "Your Current score:");
+        GlyphLayout layoutScore = new GlyphLayout(pauseFont, String.valueOf(gameScreen.getScore()));
+        // Calculate x-coordinates to center both strings
+        float xText = (Gdx.graphics.getWidth() - layoutText.width) / 2;
+        float xScore = (Gdx.graphics.getWidth() - layoutScore.width) / 2;
+        // Define y-coordinates for the strings
+        float spacing = 10; // spacing between the two lines
+        float yText = Gdx.graphics.getHeight() / 2 + layoutText.height + spacing / 2 + 200;
+        float yScore = Gdx.graphics.getHeight() / 2 - layoutScore.height - spacing / 2 + 200;
+        // Draw both strings
+        pauseFont.setColor(Color.valueOf("#FFFF00"));
+        pauseFont.draw(game.batch, layoutText, xText, yText);
+        pauseFont.draw(game.batch, layoutScore, xScore, yScore);
+
+
+
+        // redefined the button positions
+        final float RESUME_BUTTON_Y = yScore - layoutScore.height + - STRING_BUTTON_GAP - MENU_BUTTON_HEIGHT;
+        final float MENU_BUTTON_Y = RESUME_BUTTON_Y - BUTTON_BUTTON_GAP - MENU_BUTTON_HEIGHT;
+
+        // Display buttons
         game.batch.draw(resumeButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, RESUME_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
         game.batch.draw(menuButtonTexture, (Gdx.graphics.getWidth()-MENU_BUTTON_WIDTH)/2, MENU_BUTTON_Y, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT);
         if (Gdx.input.getX() >= (Gdx.graphics.getWidth() - MENU_BUTTON_WIDTH) / 2 &&
