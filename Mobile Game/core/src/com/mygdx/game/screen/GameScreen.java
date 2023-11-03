@@ -235,6 +235,7 @@ public class GameScreen implements Screen {
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
+        score = 0;
         UI = new GameUI(game);
         UI.dispose();
     }
