@@ -73,12 +73,14 @@ public class GameScreen implements Screen {
         levelingUp = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
-        UI = new GameUI(game);
+        UI = new GameUI(game, this);
 
 
         // add censors to the list with desired coordinates (can remove this after)
         censors.add(new Censor(new Vector2(100, 200), new Vector2(300, 400)));
         censors.add(new Censor(new Vector2(400, 500), new Vector2(600, 700)));
+
+        Gdx.input.setInputProcessor(UI.getStage());
     }
 
     @Override
@@ -236,8 +238,6 @@ public class GameScreen implements Screen {
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
         score = 0;
-        UI = new GameUI(game);
-        UI.dispose();
     }
 
     @Override
@@ -302,6 +302,9 @@ public class GameScreen implements Screen {
     public static int getScore() {
         return score;
     }
+
+
+
 //    public static void setAttackMode(AttackMode attackMode) {
 //        GameScreen.attackMode = attackMode;
 //    }
