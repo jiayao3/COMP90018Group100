@@ -237,8 +237,6 @@ public class GameScreen implements Screen {
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
         title = "";
-        UI = new GameUI(game, this);
-        UI.dispose();
     }
 
     @Override
