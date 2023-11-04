@@ -125,9 +125,9 @@ public class GameUI {
     }
 
     public void render(Spaceship spaceship) {
-//        resumeButton.remove(); // Don't show the resume button on the game over menu
-//        replayButton.remove(); // Show the replay button on the game over menu
-//        menuButton.remove(); // Show the menu button on the game over menu
+        resumeButton.remove();
+        replayButton.remove();
+        menuButton.remove();
 
         for (int i = 0; i < spaceship.getHP(); i++) {
             Texture heartTexture;
