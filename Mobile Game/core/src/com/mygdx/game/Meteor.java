@@ -17,6 +17,7 @@ public class Meteor {
 	private Animation<TextureRegion> explosionAnimation;
 	private float explosionTimer;
 	private boolean exploding;
+	private boolean exploded = false;
 	
 	public Meteor(int level) {
 		img_meteor = new Texture("meteor.png");
@@ -65,6 +66,7 @@ public class Meteor {
 			if (explosionAnimation.isAnimationFinished(explosionTimer)) {
 				gone = true; // Mark the meteor as gone after the explosion finishes
 			}
+			exploded = true;
 		} else {
 			sprite.setPosition(position.x, position.y);
 			sprite.draw(batch);
@@ -80,7 +82,10 @@ public class Meteor {
 	public void detectHit(Laser laser) {
 		if(laser.laserSprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
 			laser.gone();
-			startExplosion();
+			if (!exploded) {
+				startExplosion();
+			}
+
 		}
 	}
 
@@ -88,7 +93,10 @@ public class Meteor {
 		if(missile.mSprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
 			sprite.setPosition(500, 1000);
 			gone = true;
-			startExplosion();
+			if (!exploded) {
+				startExplosion();
+			}
+
 		}
 	}
 
