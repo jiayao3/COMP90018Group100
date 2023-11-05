@@ -17,7 +17,13 @@ public class Spaceship {
 	public ArrayList<Laser> lasers;
 	public static float speed = 0;
 	public int HP = 5;
-	
+
+	private boolean isFlickering = false;
+	private float flickerTime = 0;
+	private float flickerDuration = 0.8f; // 1 second of flickering
+	private float flickerInterval = 0.15f; // 0.1 seconds on/off intervals
+
+
 	public Spaceship() {
 		img = new Texture("spaceship.png");
 		sprite = new Sprite(img);
@@ -26,6 +32,7 @@ public class Spaceship {
 		lasers = new ArrayList<>();
 		missiles = new ArrayList<>();
 		position = new Vector2((Gdx.graphics.getWidth()-sprite.getWidth())/2, 50);
+
 	}
 
 	public void Update(float deltaTime) {
@@ -66,9 +73,25 @@ public class Spaceship {
 			}
 		}
 
+		if (isFlickering) {
+			flickerTime += deltaTime;
+			// Alternate visibility
+			sprite.setAlpha((flickerTime % (flickerInterval * 2)) < flickerInterval ? 0 : 1);
+			// Stop flickering after the duration ends
+			if (flickerTime >= flickerDuration) {
+				isFlickering = false;
+				sprite.setAlpha(1); // Make sure the sprite is visible after flickering
+			}
+		}
+
 		// within screen
 		if (position.x <= 0) position.x = 0;
 		if (position.x >= Gdx.graphics.getWidth() - sprite.getWidth()) position.x = Gdx.graphics.getWidth() - sprite.getWidth();
+	}
+
+	public void startFlickering() {
+		isFlickering = true;
+		flickerTime = 0; // Reset the flicker time
 	}
 	
 	public ArrayList<Laser> Draw(SpriteBatch batch) {
