@@ -67,7 +67,7 @@ public class GameUI {
         pauseFont = generator.generateFont(parameter);
         generator.dispose();
         // Change the size
-        pauseFont.getData().setScale(4.5f, 4.5f);
+        pauseFont.getData().setScale(Gdx.graphics.getWidth() * 0.004f, Gdx.graphics.getWidth() * 0.004f);
 
 
         fullHeartTexture = new Texture("heart-full.png");
@@ -226,6 +226,17 @@ public class GameUI {
     }
 
     public void renderLose(GameScreen gameScreen) {
+
+        // Create the string
+        GlyphLayout layoutText = new GlyphLayout(pauseFont, "YOU LOSE!");
+        // Calculate x-coordinates to center the string
+        float xText = (Gdx.graphics.getWidth() - layoutText.width) / 2;
+        // Define y-coordinates for the string
+        float spacing = 10; // spacing between the two lines
+        float yText = Gdx.graphics.getHeight() / 2 + layoutText.height + spacing / 2 + 200;
+        // Draw the string
+        pauseFont.setColor(Color.valueOf("#FFFF00"));
+        pauseFont.draw(game.batch, layoutText, xText, yText);
 
         // Before drawing the stage, set the visibility or add/remove actors
         resumeButton.remove(); // Don't show the resume button on the game over menu

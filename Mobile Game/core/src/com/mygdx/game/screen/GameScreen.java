@@ -201,7 +201,7 @@ public class GameScreen implements Screen {
                 }
             }
             else {
-                endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
+//                endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 75, Gdx.graphics.getHeight()/2);
                 UI.renderLose(this);
             }
         } else {
