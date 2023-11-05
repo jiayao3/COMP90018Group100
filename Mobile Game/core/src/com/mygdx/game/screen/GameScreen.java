@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -53,6 +54,11 @@ public class GameScreen implements Screen {
     private FaceMesh faceMesh;
     private FirebaseInterface firebaseInterface;
     private Array<Censor> censors;
+    private float levelUpTime = 0;
+    private static final float LEVEL_UP_DURATION = 3.0f; // 3 seconds for level-up screen
+    private boolean canContinue = false; // flag to check if we can continue after time delay
+
+
     public GameScreen(Game game) {
         this.game = game;
         faceMesh = new FaceMesh();
@@ -72,6 +78,7 @@ public class GameScreen implements Screen {
         boss = new Boss(level);
         levelingUp = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
+        endTitle.getData().setScale(Gdx.graphics.getWidth() * 0.0012f);
         title = "";
         UI = new GameUI(game, this);
 
@@ -196,8 +203,34 @@ public class GameScreen implements Screen {
                     UI.render(spaceship);
                 }
                 else {
-                    endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 350, Gdx.graphics.getHeight()/2);
-                    UI.checkLevelUp(this);
+//                    endTitle.draw(game.batch, title, Gdx.graphics.getWidth()/2 - 350, Gdx.graphics.getHeight()/2);
+//                    UI.checkLevelUp(this);
+                    levelUpTime += delta; // increment level up time
+
+                    if(levelUpTime < LEVEL_UP_DURATION) {
+                        float timeLeft = LEVEL_UP_DURATION - levelUpTime;
+                        String message = String.format("Leveling Up! Continue in %ds", (int)Math.ceil(timeLeft));
+                        GlyphLayout layout = new GlyphLayout(); // GlyphLayout is used to calculate the width of the text
+                        layout.setText(endTitle, message);
+
+                        float x = (Gdx.graphics.getWidth() - layout.width) / 2; // Center the text horizontally
+                        float y = (Gdx.graphics.getHeight() + layout.height) / 2; // Center the text vertically
+
+                        endTitle.draw(game.batch, layout, x, y);
+                    } else {
+                        String message = "Touch anywhere to proceed!";
+                        GlyphLayout layout = new GlyphLayout(); // GlyphLayout is used to calculate the width of the text
+                        layout.setText(endTitle, message);
+
+                        float x = (Gdx.graphics.getWidth() - layout.width) / 2; // Center the text horizontally
+                        float y = (Gdx.graphics.getHeight() + layout.height) / 2; // Center the text vertically
+
+                        endTitle.draw(game.batch, layout, x, y);
+
+                        canContinue = true; // enable continuation after 3 seconds
+                        UI.checkLevelUp(this);
+                    }
+
                 }
             }
             else {
@@ -236,6 +269,7 @@ public class GameScreen implements Screen {
         levelingUp = false;
         gameOver = false;
         endTitle = new BitmapFont(Gdx.files.internal("titlefont.fnt"));
+        endTitle.getData().setScale(Gdx.graphics.getWidth() * 0.003f);
         title = "";
         score = 0;
     }
@@ -279,7 +313,9 @@ public class GameScreen implements Screen {
         meteors = new ArrayList<>();
         minions = new ArrayList<>();
         boss = new Boss(level);
+        levelUpTime = 0;
         levelingUp = false;
+        canContinue = false; // reset the flag
     }
 
     public void renderBackground() {
