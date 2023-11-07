@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.mygdx.game.DataCallback;
+import com.mygdx.game.Items.CustomisedButtonStyle;
 
 public class LeaderBoardScreen implements Screen {
 
@@ -32,7 +35,8 @@ public class LeaderBoardScreen implements Screen {
     private Game game;
     private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     private Texture background;
-
+    final float BACK_BUTTON_WIDTH = Gdx.graphics.getWidth() * 0.45f;
+    final float BACK_BUTTON_HEIGHT = Gdx.graphics.getHeight() * 0.07f;
     public LeaderBoardScreen(Game game) {
         this.game = game;
         background = new Texture("backgroundImage.png");
@@ -45,12 +49,18 @@ public class LeaderBoardScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         table = new Table();
-
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Karma Future.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 80;
+        BitmapFont titleLabelFont = generator.generateFont(parameter);
+        generator.dispose();
+        skin.add("titleLabelFont", titleLabelFont);
         Label.LabelStyle labelStyle = new Label.LabelStyle(skin.getFont("default-font"), skin.getColor("white"));
 
 
         table.clear();
-        Label titleLabel = new Label("Leaderboard", labelStyle);
+        Label.LabelStyle titleLabelStyle = new Label.LabelStyle(skin.getFont("titleLabelFont"), Color.valueOf("#ffffff"));
+        Label titleLabel = new Label("LeaderBoard", titleLabelStyle);
         table.add(titleLabel).colspan(2).padBottom(40).row();
 
         // show the leaderboard
@@ -62,13 +72,13 @@ public class LeaderBoardScreen implements Screen {
         // Add the ScrollPane to the stage
         stage.addActor(scrollPane);
 
-        backButton = new TextButton("Back", new Skin(Gdx.files.internal("uiskin.json")));
-        float buttonWidth = 200f;
-        float buttonHeight = 100f;
-        backButton.setWidth(buttonWidth);
-        backButton.setHeight(buttonHeight);
-        backButton.setPosition((Gdx.graphics.getWidth() - backButton.getWidth()) / 2, 100); // Adjust the position as needed
+        TextButton.TextButtonStyle backStyle = new CustomisedButtonStyle(BACK_BUTTON_WIDTH, BACK_BUTTON_HEIGHT).getButtonStyle();
+        // Display back button
+        TextButton backButton = new TextButton("BACK", backStyle);
 
+        backButton.setWidth(BACK_BUTTON_WIDTH);
+        backButton.setHeight(BACK_BUTTON_HEIGHT);
+        backButton.setPosition((Gdx.graphics.getWidth() - backButton.getWidth()) / 2, Gdx.graphics.getHeight() * 0.1f);
 
         backButton.addListener(new ClickListener() {
             @Override
