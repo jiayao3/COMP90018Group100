@@ -153,6 +153,17 @@ public class Spaceship {
 		}
 	}
 
+	public void shootMissile() {
+		if (timeSinceLastShot>=cooldown) {
+			Missile missile = new Missile();
+			missiles.add(missile);
+			float x = position.x + sprite.getWidth() / 2 - 4;
+			float y = sprite.getHeight() - 15;
+			missile.mPosition.set(x, y);
+			timeSinceLastShot = 0;
+		}
+	}
+
 	public static void move(double degree) {
 		if (degree < 0) {
 			speed = -(float) Math.pow(degree, 2);

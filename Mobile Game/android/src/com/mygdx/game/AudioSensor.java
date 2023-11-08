@@ -72,7 +72,12 @@ public class AudioSensor{
                                 @Override
                                 public void run() {
                                     if (SettingScreen.getCurAttackMode() == AttackMode.VOICE_MODE) {
-                                        GameScreen.shoot(true);
+                                        if (volume < 1200){
+                                            GameScreen.shoot(true, false);
+                                        } else if (volume >= 1200){
+                                            GameScreen.shoot(true, true);
+                                        }
+
                                         Log.d("AudioSensor", "Above threshold");
                                     }
                                 }
@@ -80,7 +85,7 @@ public class AudioSensor{
                         }
                     } else {
                         if (SettingScreen.getCurAttackMode() == AttackMode.VOICE_MODE) {
-                            GameScreen.shoot(false);
+                            GameScreen.shoot(false, false);
                         }
                         aboveThreshold = false;
                     }

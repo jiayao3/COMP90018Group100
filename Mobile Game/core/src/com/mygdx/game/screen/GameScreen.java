@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
     private float levelUpTime = 0;
     private static final float LEVEL_UP_DURATION = 3.0f; // 3 seconds for level-up screen
     private boolean canContinue = false; // flag to check if we can continue after time delay
-
+    private static boolean missile = false;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -110,7 +110,12 @@ public class GameScreen implements Screen {
                 if(!levelingUp) {
                     scoreCount(delta);
                     if (shooting && spaceship != null) {
-                        spaceship.shoot();
+                        if (missile == true){
+                            spaceship.shootMissile();
+                        } else{
+                            spaceship.shoot();
+                        }
+
                     }
 
                     for (int i = meteors.size() - 1; i >= 0; i--) {
@@ -301,8 +306,9 @@ public class GameScreen implements Screen {
         UI.renderScore(score);
     }
 
-    public static void shoot(boolean state) {
+    public static void shoot(boolean state, boolean isMissile) {
         shooting = state;
+        missile = isMissile;
     }
 
 
