@@ -49,7 +49,7 @@ public class Minion {
 
     public void hitShip(Spaceship ship) {
         if(ship.sprite.getBoundingRectangle().overlaps(sprite.getBoundingRectangle())) {
-            ship.HP -= 2;
+            ship.HP -= 1;
             ship.startFlickering();
             sprite.setPosition(500, 1000);
             gone = true;
