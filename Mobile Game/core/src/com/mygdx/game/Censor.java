@@ -39,7 +39,7 @@ public class Censor {
     }
 
     public void draw(SpriteBatch batch) {
-        if (shouldDraw < 500) {
+        if (shouldDraw < 800) {
             batch.draw(censorTexture, topLeft.x, topLeft.y);
         }
     }

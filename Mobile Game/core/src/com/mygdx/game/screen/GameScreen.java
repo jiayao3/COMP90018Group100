@@ -133,9 +133,7 @@ public class GameScreen implements Screen {
                         }
                     }
 
-                    for (Censor censor : censors) {
-                        censor.draw(game.batch);
-                    }
+
 
                     for (int i = minions.size() - 1; i >= 0; i--) {
                         Minion minion = minions.get(i);
@@ -146,8 +144,8 @@ public class GameScreen implements Screen {
                             if (minion.gone == true){
                                 float topLeftX = MathUtils.random(0, screenWidth - 100); // Adjust the range as needed
                                 float topLeftY = MathUtils.random(0, screenHeight - 100); // Adjust the range as needed
-                                float bottomRightX = topLeftX + 100; // Adjust the width as needed
-                                float bottomRightY = topLeftY + 100; // Adjust the height as needed
+                                float bottomRightX = topLeftX + 300; // Adjust the width as needed
+                                float bottomRightY = topLeftY + 300; // Adjust the height as needed
                                 censors.add(new Censor(new Vector2(topLeftX, topLeftY), new Vector2(bottomRightX, bottomRightY)));
                             }
                         } else {
@@ -216,6 +214,9 @@ public class GameScreen implements Screen {
                     if (boss.HP <= 0) {
                         boss.sprite.setPosition(1000, 1000);
                         levelUpScreen();
+                    }
+                    for (Censor censor : censors) {
+                        censor.draw(game.batch);
                     }
                     UI.render(spaceship);
                 }
