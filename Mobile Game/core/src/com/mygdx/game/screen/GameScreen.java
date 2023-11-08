@@ -84,8 +84,8 @@ public class GameScreen implements Screen {
 
 
         // add censors to the list with desired coordinates (can remove this after)
-        censors.add(new Censor(new Vector2(100, 200), new Vector2(300, 400)));
-        censors.add(new Censor(new Vector2(400, 500), new Vector2(600, 700)));
+//        censors.add(new Censor(new Vector2(100, 200), new Vector2(300, 400)));
+//        censors.add(new Censor(new Vector2(400, 500), new Vector2(600, 700)));
 
         Gdx.input.setInputProcessor(UI.getStage());
     }
