@@ -38,26 +38,30 @@ public class AndroidFirebaseInterface implements FirebaseInterface{
 //            Log.d("score sent", String.valueOf(score));
 //            Log.d("uid", String.valueOf(score));
             FirebaseUser currentUser = Login.mAuth.getCurrentUser();
-            String uid = currentUser.getUid();
-            final DatabaseReference scoreRef = myRef.child("users").child(uid).child("highScore");
+            if(currentUser != null) {
+                String uid = currentUser.getUid();
+                final DatabaseReference scoreRef = myRef.child("users").child(uid).child("highScore");
 
-            scoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Integer currentHighScore = dataSnapshot.getValue(Integer.class);
-                        if (score > currentHighScore) {
-                            // Update the "highScore" if the new score is higher
-                            scoreRef.setValue(score);
+
+                scoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Integer currentHighScore = dataSnapshot.getValue(Integer.class);
+                            if (score > currentHighScore) {
+                                // Update the "highScore" if the new score is higher
+                                scoreRef.setValue(score);
+                            }
                         }
                     }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle any errors that occurred.
-                    Log.e("Database Read Error", "Error: " + databaseError.getMessage());
-                }
-            });
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle any errors that occurred.
+                        Log.e("Database Read Error", "Error: " + databaseError.getMessage());
+                    }
+                });
+            }
         }
     }
 

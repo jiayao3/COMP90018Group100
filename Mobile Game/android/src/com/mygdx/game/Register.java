@@ -131,6 +131,7 @@ public class Register extends AppCompatActivity {
         // Launch your libGDX game activity
         Intent intent = new Intent(this, AndroidLauncher.class);
         startActivity(intent);
+        finish();
 
         // Finish the current activity
     }

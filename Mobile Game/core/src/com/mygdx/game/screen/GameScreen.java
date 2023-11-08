@@ -139,7 +139,8 @@ public class GameScreen implements Screen {
                         }
                     }
                     if (spaceship.HP > 0) {
-                        lasers = spaceship.Draw(game.batch);
+                        lasers = spaceship.DrawL(game.batch);
+                        missiles = spaceship.DrawM(game.batch);
                     }
 
                     if (spaceship.HP <= 0) {
@@ -288,7 +289,6 @@ public class GameScreen implements Screen {
         gameOver = true;
         title = "You Lose!";
         game.getFirebaseInterface().sendScore(score);
-
     }
 
     public void scoreCount(float delta) {

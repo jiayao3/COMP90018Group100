@@ -64,13 +64,13 @@ public class Spaceship {
 				laser.laserPosition.set(x, y);
 			}
 
-			if (Gdx.input.isButtonPressed(1)) {
-				Missile missile = new Missile();
-				missiles.add(missile);
-				float x = position.x + sprite.getWidth() / 2 - 4;
-				float y = sprite.getHeight() - 10;
-				missile.mPosition.set(x, y);
-			}
+//			if (Gdx.input.justTouched()) {
+//				Missile missile = new Missile();
+//				missiles.add(missile);
+//				float x = position.x + sprite.getWidth() / 2 - 4;
+//				float y = sprite.getHeight() - 10;
+//				missile.mPosition.set(x, y);
+//			}
 		}
 
 		if (isFlickering) {
@@ -94,7 +94,7 @@ public class Spaceship {
 		flickerTime = 0; // Reset the flicker time
 	}
 	
-	public ArrayList<Laser> Draw(SpriteBatch batch) {
+	public ArrayList<Laser> DrawL(SpriteBatch batch) {
 		Update(Gdx.graphics.getDeltaTime());
 		sprite.setPosition(position.x, position.y);
 		sprite.draw(batch);
@@ -108,6 +108,22 @@ public class Spaceship {
 		}
 
 		return lasers;
+	}
+
+	public ArrayList<Missile> DrawM(SpriteBatch batch) {
+		Update(Gdx.graphics.getDeltaTime());
+		sprite.setPosition(position.x, position.y);
+		sprite.draw(batch);
+		for(Missile missile: missiles) {
+			if(!missile.gone){
+				missile.Draw(batch);
+				if(missile.mPosition.y>Gdx.graphics.getHeight()+1) {
+					missile.gone();
+				}
+			}
+		}
+
+		return missiles;
 	}
 
 	public int getHP() {

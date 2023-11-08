@@ -87,7 +87,7 @@ public class Boss {
             healthBarTexture = new Texture("health_bar.PNG"); // Create a simple texture for the health bar
             healthBarSprite = new Sprite(healthBarTexture);
             healthBarSprite.setSize(sprite.getWidth(), 10); // Set the size of the health bar
-            HP = 50;
+            HP = 10;
             maxHealth = HP;
             speed = 250;
         }
