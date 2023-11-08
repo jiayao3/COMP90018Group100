@@ -247,10 +247,14 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 		boolean newRightEyeClosed = rightEyeDistance < blinkThreshold;
 
 		if (SettingScreen.getCurAttackMode() == AttackMode.EYES_BLINKING_MODE) {
+
 			if (newLeftEyeClosed && newRightEyeClosed) {
-				GameScreen.shoot(true);
+				GameScreen.shoot(true, true);
+			} else if (newLeftEyeClosed || newRightEyeClosed){
+
+				GameScreen.shoot(true, false);
 			} else {
-				GameScreen.shoot(false);
+				GameScreen.shoot(false, false);
 			}
 		}
 
