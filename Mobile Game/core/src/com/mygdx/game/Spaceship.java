@@ -18,7 +18,7 @@ public class Spaceship {
 	public static float speed = 0;
 	public int HP = 5;
 
-	private float laserCooldown = 0.5f; // Set the initial cooldown time in seconds
+	private float laserCooldown = 0.2f; // Set the initial cooldown time in seconds
 	private float timeSinceLastShot = 0;
 
 	private boolean isFlickering = false;
@@ -137,11 +137,14 @@ public class Spaceship {
 	}
 
 	public void shoot() {
-		Laser laser = new Laser();
-		lasers.add(laser);
-		float x = position.x + sprite.getWidth() / 2 - 4;
-		float y = sprite.getHeight() - 15;
-		laser.laserPosition.set(x, y);
+		if (timeSinceLastShot>=laserCooldown) {
+			Laser laser = new Laser();
+			lasers.add(laser);
+			float x = position.x + sprite.getWidth() / 2 - 4;
+			float y = sprite.getHeight() - 15;
+			laser.laserPosition.set(x, y);
+			timeSinceLastShot = 0;
+		}
 	}
 
 	public static void move(double degree) {
