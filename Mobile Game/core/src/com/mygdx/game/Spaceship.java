@@ -154,7 +154,7 @@ public class Spaceship {
 	}
 
 	public void shootMissile() {
-		if (timeSinceLastShot>=cooldown) {
+		if (timeSinceLastShot>=1.2f) {
 			Missile missile = new Missile();
 			missiles.add(missile);
 			float x = position.x + sprite.getWidth() / 2 - 4;

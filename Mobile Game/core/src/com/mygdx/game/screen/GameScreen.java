@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -53,11 +54,14 @@ public class GameScreen implements Screen {
     private static boolean shooting = false;
     private FaceMesh faceMesh;
     private FirebaseInterface firebaseInterface;
-    private Array<Censor> censors;
+    private ArrayList<Censor> censors;
     private float levelUpTime = 0;
     private static final float LEVEL_UP_DURATION = 3.0f; // 3 seconds for level-up screen
     private boolean canContinue = false; // flag to check if we can continue after time delay
     private static boolean missile = false;
+
+    private int screenWidth = Gdx.graphics.getWidth();
+    private int screenHeight = Gdx.graphics.getHeight();
 
     public GameScreen(Game game) {
         this.game = game;
@@ -73,7 +77,7 @@ public class GameScreen implements Screen {
         missiles = new ArrayList<>();
         meteors = new ArrayList<>();
         minions = new ArrayList<>();
-        censors = new Array<>();
+        censors = new ArrayList<>();
         life = new Life();
         boss = new Boss(level);
         levelingUp = false;
@@ -82,17 +86,17 @@ public class GameScreen implements Screen {
         title = "";
         UI = new GameUI(game, this);
 
-
         // add censors to the list with desired coordinates (can remove this after)
-        censors.add(new Censor(new Vector2(100, 200), new Vector2(300, 400)));
-        censors.add(new Censor(new Vector2(400, 500), new Vector2(600, 700)));
 
         Gdx.input.setInputProcessor(UI.getStage());
     }
 
     @Override
     public void render(float delta) {
-
+        for (int i = censors.size() -1; i>=0; i--){
+            Censor censor = censors.get(i);
+            censor.addTime();
+        }
         ScreenUtils.clear(0, 0, 0, 1);
 
         game.batch.begin();
@@ -139,6 +143,13 @@ public class GameScreen implements Screen {
                         if (!minion.gone) {
                             minion.Draw(game.batch);
                             minion.hitShip(spaceship);
+                            if (minion.gone == true){
+                                float topLeftX = MathUtils.random(0, screenWidth - 100); // Adjust the range as needed
+                                float topLeftY = MathUtils.random(0, screenHeight - 100); // Adjust the range as needed
+                                float bottomRightX = topLeftX + 100; // Adjust the width as needed
+                                float bottomRightY = topLeftY + 100; // Adjust the height as needed
+                                censors.add(new Censor(new Vector2(topLeftX, topLeftY), new Vector2(bottomRightX, bottomRightY)));
+                            }
                         } else {
                             minions.remove(i);
                         }

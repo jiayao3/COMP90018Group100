@@ -10,10 +10,16 @@ public class Censor {
     private Vector2 topLeft;
     private Vector2 bottomRight;
     private Texture censorTexture;
+    private float duration = 0.1f; // Duration in seconds
+    private float timer; // Timer to keep track of elapsed time
+    private int shouldDraw; // Flag to control drawing
 
     public Censor(Vector2 topLeft, Vector2 bottomRight) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+
+        this.timer = 0;
+        this.shouldDraw = 0;
         createCensorTexture();
     }
 
@@ -28,7 +34,13 @@ public class Censor {
         pixmap.dispose();
     }
 
+    public void addTime(){
+        this.shouldDraw++;
+    }
+
     public void draw(SpriteBatch batch) {
-        batch.draw(censorTexture, topLeft.x, topLeft.y);
+        if (shouldDraw < 500) {
+            batch.draw(censorTexture, topLeft.x, topLeft.y);
+        }
     }
 }
