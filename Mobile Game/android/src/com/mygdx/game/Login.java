@@ -126,7 +126,6 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
 
         // Finish the current activity
-        finish();
     }
 
 

@@ -35,23 +35,6 @@ public class Meteor {
 		else{
 			speed = 800;
 		}
-
-		TextureRegion[] explosionFrames = new TextureRegion[7];
-		for (int i = 0; i < 7; i++) {
-			Texture texture = new Texture(Gdx.files.internal("Animation/meterExplosion_frame_" + i + ".png"));
-			explosionFrames[i] = new TextureRegion(texture);
-
-
-//			TextureRegion region = new TextureRegion(texture);
-//
-//			// Set the region size here (this will not resize the actual texture, but it will affect how the texture is drawn)
-//			region.setRegionWidth(20);  // set the width to a custom value
-//			region.setRegionHeight(20); // set the height to a custom value
-//
-//			explosionFrames[i] = region;
-		}
-
-		explosionAnimation = new Animation<TextureRegion>(0.1f, explosionFrames);
 	}
 	
 	public void Draw(SpriteBatch batch) {
@@ -60,6 +43,14 @@ public class Meteor {
 //		position.y -= Gdx.graphics.getDeltaTime()*speed;
 		if (exploding) {
 			// Draw the explosion animation
+			TextureRegion[] explosionFrames = new TextureRegion[2];
+			for (int i = 0; i < 2; i++) {
+				Texture texture = new Texture(Gdx.files.internal("Animation/meterExplosion_frame_" + i + ".png"));
+				explosionFrames[i] = new TextureRegion(texture);
+
+			}
+
+			explosionAnimation = new Animation<TextureRegion>(0.1f, explosionFrames);
 			TextureRegion currentFrame = explosionAnimation.getKeyFrame(explosionTimer);
 			batch.draw(currentFrame, position.x-2, position.y-2, currentFrame.getRegionWidth() * 0.3f, currentFrame.getRegionHeight() * 0.3f);
 			explosionTimer += Gdx.graphics.getDeltaTime();

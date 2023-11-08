@@ -79,7 +79,6 @@ public class Profile extends AppCompatActivity {
         startActivity(intent);
 
         // Finish the current activity
-        finish();
     }
 
     private void initialFireBase(String referenceName){

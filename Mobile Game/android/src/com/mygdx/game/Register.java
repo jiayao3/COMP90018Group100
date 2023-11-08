@@ -133,7 +133,6 @@ public class Register extends AppCompatActivity {
         startActivity(intent);
 
         // Finish the current activity
-        finish();
     }
 
     private void registerUser(String email, String password, String username) {

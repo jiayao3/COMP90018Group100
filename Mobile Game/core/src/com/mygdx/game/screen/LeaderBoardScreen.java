@@ -19,7 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.mygdx.game.Game;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -108,15 +111,19 @@ public class LeaderBoardScreen implements Screen {
         game.getFirebaseInterface().getLeaderboardData(new DataCallback<Map<String, Integer>>() {
             @Override
             public void onDataReceived(Map<String, Integer> leaderboardData) {
-                // sort the data in reverse order
-                TreeMap<Integer, String> sortedLeaderboard = new TreeMap<>(Collections.reverseOrder());
-                for (Map.Entry<String, Integer> entry : leaderboardData.entrySet()) {
-                    sortedLeaderboard.put(entry.getValue(), entry.getKey());
-                }
+                List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(leaderboardData.entrySet());
 
-                // add the entries to the table
-                for (Map.Entry<Integer, String> entry : sortedLeaderboard.entrySet()) {
-                    addLeaderboardEntry(entry.getValue(), entry.getKey());
+                // Sort the entries in reverse order based on values
+                Collections.sort(sortedEntries, new Comparator<Map.Entry<String, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+                        return entry2.getValue().compareTo(entry1.getValue());
+                    }
+                });
+
+                // Add the entries to the table
+                for (Map.Entry<String, Integer> entry : sortedEntries) {
+                    addLeaderboardEntry(entry.getKey(), entry.getValue());
                 }
             }
 
