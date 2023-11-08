@@ -70,7 +70,7 @@ public class Boss {
                 HP -= 25;
             }
             else{
-                HP -= 5;
+                HP -= 1;
             }
             missile.gone();
         }
@@ -87,9 +87,9 @@ public class Boss {
             healthBarTexture = new Texture("health_bar.PNG"); // Create a simple texture for the health bar
             healthBarSprite = new Sprite(healthBarTexture);
             healthBarSprite.setSize(sprite.getWidth(), 10); // Set the size of the health bar
-            HP = 10;
+            HP = 100;
             maxHealth = HP;
-            speed = 250;
+            speed = 10;
         }
 
         else if(level == 2){
@@ -101,9 +101,9 @@ public class Boss {
             healthBarTexture = new Texture("health_bar.PNG"); // Create a simple texture for the health bar
             healthBarSprite = new Sprite(healthBarTexture);
             healthBarSprite.setSize(sprite.getWidth(), 10); // Set the size of the health bar
-            HP = 100;
+            HP = 200;
             maxHealth = HP;
-            speed = 500;
+            speed = 250;
         }
 
         else if(level == 3){
@@ -115,9 +115,9 @@ public class Boss {
             healthBarTexture = new Texture("health_bar.PNG"); // Create a simple texture for the health bar
             healthBarSprite = new Sprite(healthBarTexture);
             healthBarSprite.setSize(sprite.getWidth(), 10); // Set the size of the health bar
-            HP = 200;
+            HP = 300;
             maxHealth = HP;
-            speed = 750;
+            speed = 500;
         }
 
         else {
@@ -131,7 +131,7 @@ public class Boss {
             healthBarSprite.setSize(sprite.getWidth(), 10); // Set the size of the health bar
             HP = 1000000000;
             maxHealth = HP;
-            speed = 1000;
+            speed = 750;
         }
     }
 }
