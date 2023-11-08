@@ -18,6 +18,9 @@ public class Spaceship {
 	public static float speed = 0;
 	public int HP = 5;
 
+	private float laserCooldown = 0.5f; // Set the initial cooldown time in seconds
+	private float timeSinceLastShot = 0;
+
 	private boolean isFlickering = false;
 	private float flickerTime = 0;
 	private float flickerDuration = 0.8f; // 1 second of flickering
@@ -41,6 +44,8 @@ public class Spaceship {
 			position.x -= deltaTime * speed;
 		}
 
+		timeSinceLastShot += deltaTime; // Increase the time since last shot
+
 		// Touch screen control
 		if(Gdx.input.isTouched() && SettingScreen.getCurControlMode() == ControlMode.TOUCH_MODE) {
 			float touchX = Gdx.input.getX();
@@ -56,12 +61,13 @@ public class Spaceship {
 		// Tap Attack
 		if(Gdx.input.isTouched() && SettingScreen.getCurAttackMode() == AttackMode.TAP_MODE) {
 			// Fire laser
-			if (Gdx.input.justTouched()) {
+			if (Gdx.input.justTouched() && timeSinceLastShot >= laserCooldown) {
 				Laser laser = new Laser();
 				lasers.add(laser);
 				float x = position.x + sprite.getWidth() / 2 - 4;
 				float y = sprite.getHeight() - 10;
 				laser.laserPosition.set(x, y);
+				timeSinceLastShot = 0;
 			}
 
 //			if (Gdx.input.justTouched()) {
