@@ -64,6 +64,12 @@ public class Login extends AppCompatActivity {
                 email = String.valueOf(input_email.getText());
                 password = String.valueOf(input_password.getText());
 
+                // Checking for network
+                if (!NetworkUtils.isNetworkAvailable(Login.this)) {
+                    Toast.makeText(Login.this, "No internet connection available.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 // Checking if the inputs are empty
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(Login.this, "Email cannot be empty.",
@@ -75,6 +81,7 @@ public class Login extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
+
 
                 // Code taken from firebase original documentation
                 // https://firebase.google.com/docs/auth/android/password-auth#java_3
@@ -104,6 +111,12 @@ public class Login extends AppCompatActivity {
         register_here.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Checking for network
+                if (!NetworkUtils.isNetworkAvailable(Login.this)) {
+                    Toast.makeText(Login.this, "No internet connection available.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
                 // If the button is clicked, it will bring the user to the registration page
                 Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
