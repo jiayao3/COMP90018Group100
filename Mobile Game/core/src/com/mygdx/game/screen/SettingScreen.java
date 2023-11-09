@@ -60,7 +60,7 @@ public class SettingScreen implements Screen {
         // Add Font for title-labels in skin
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Karma Future.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80; // set font size
+        parameter.size = (int)(Gdx.graphics.getHeight() * 0.03f);; // set font size
         // parameter.color = Color.valueOf("#ffffff"); // set font color
         BitmapFont titleLabelFont = generator.generateFont(parameter);
         generator.dispose();
@@ -69,7 +69,7 @@ public class SettingScreen implements Screen {
         // Add Font for description labels in skin
         generator = new FreeTypeFontGenerator(Gdx.files.internal("font/light_pixel-7.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40; // set font size
+        parameter.size = (int)(Gdx.graphics.getHeight() * 0.018f);; // set font size
         // parameter.color = Color.valueOf("#dfec11"); // set font color
         BitmapFont descLabelFont = generator.generateFont(parameter);
         generator.dispose();
@@ -122,8 +122,8 @@ public class SettingScreen implements Screen {
         descriptionLabel.setAlignment(Align.center);
 
         // Add widgets to table and stage
-        float buttonWidth = 300;
-        float buttonHeight = 100;
+        float buttonWidth = Gdx.graphics.getWidth() * 0.3f;;
+        float buttonHeight = Gdx.graphics.getHeight() * 0.04f;;
         table.add(movementLabel).colspan(3).padBottom(100);
         table.row();
         table.add(faceButton).width(buttonWidth).height(buttonHeight).padRight(10);

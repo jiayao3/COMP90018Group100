@@ -45,8 +45,8 @@ public class GameUI {
     final float STRING_BUTTON_GAP = Gdx.graphics.getHeight() * 0.06f;
     final float BUTTON_BUTTON_GAP = Gdx.graphics.getHeight() * 0.02f;
 
-    private static final int RESUME_BUTTON_Y = 800;
-    private static final int MENU_BUTTON_Y = 500;
+    private static final float RESUME_BUTTON_Y = Gdx.graphics.getHeight() * 0.35f;
+    private static final float MENU_BUTTON_Y = Gdx.graphics.getHeight() * 0.25f;
 
 
 
@@ -164,7 +164,7 @@ public class GameUI {
         float xText = (Gdx.graphics.getWidth() - layoutText.width) / 2;
         float xScore = (Gdx.graphics.getWidth() - layoutScore.width) / 2;
         // Define y-coordinates for the strings
-        float spacing = 10; // spacing between the two lines
+        float spacing = Gdx.graphics.getHeight() *0.005f; // spacing between the two lines
         float yText = Gdx.graphics.getHeight() / 2 + layoutText.height + spacing / 2 + 200;
         float yScore = Gdx.graphics.getHeight() / 2 - layoutScore.height - spacing / 2 + 200;
         // Draw both strings
