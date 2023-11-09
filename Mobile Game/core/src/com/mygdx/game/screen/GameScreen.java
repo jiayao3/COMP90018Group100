@@ -357,21 +357,4 @@ public class GameScreen implements Screen {
         return score;
     }
 
-
-
-//    public static void setAttackMode(AttackMode attackMode) {
-//        GameScreen.attackMode = attackMode;
-//    }
-//
-//    public static void setControlMode(ControlMode controlMode) {
-//        GameScreen.controlMode = controlMode;
-//    }
-//
-//    public static ControlMode getControlMode() {
-//        return controlMode;
-//    }
-//
-//    public static AttackMode getAttackMode() {
-//        return attackMode;
-//    }
 }

@@ -149,7 +149,7 @@ public class AndroidLauncher extends AndroidApplication  implements LifecycleOwn
 	protected void onStart() {
 		super.onStart();
 		lifecycleRegistry.setCurrentState(Lifecycle.State.STARTED);
-		// rest of your code...
+
 	}
 
 	/** Sets up core workflow for streaming mode. */

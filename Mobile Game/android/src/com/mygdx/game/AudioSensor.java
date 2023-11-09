@@ -58,7 +58,6 @@ public class AudioSensor{
                 while (isRecording) {
                     int bytesRead = audioRecord.read(audioBuffer, 0, BUFFER_SIZE);
                     if (bytesRead < 0) {
-                        // handle read error later
                         break;
                     }
 

@@ -38,9 +38,7 @@ public class Meteor {
 	}
 	
 	public void Draw(SpriteBatch batch) {
-//		sprite.setPosition(position.x, position.y);
-//		sprite.draw(batch);
-//		position.y -= Gdx.graphics.getDeltaTime()*speed;
+
 		if (exploding) {
 			// Draw the explosion animation
 			TextureRegion[] explosionFrames = new TextureRegion[2];
