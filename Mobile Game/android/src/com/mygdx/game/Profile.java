@@ -77,7 +77,7 @@ public class Profile extends AppCompatActivity {
         // Launch your libGDX game activity
         Intent intent = new Intent(this, AndroidLauncher.class);
         startActivity(intent);
-        finish();
+//        finish();
 
         // Finish the current activity
     }
